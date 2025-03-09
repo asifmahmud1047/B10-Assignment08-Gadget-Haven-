@@ -1,0 +1,166 @@
+[
+  {
+    "product_id": 1,
+    "product_title": "Laptop X1",
+    "product_image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
+    "category": "computers",
+    "price": 999.99,
+    "description": "High-performance laptop with 16GB RAM and 512GB SSD.",
+    "specifications": [
+      "16GB RAM",
+      "512GB SSD",
+      "Intel i7 Processor",
+      "15.6 inch Full HD Display"
+    ],
+    "availability": true,
+    "rating": 4.8,
+    "other_field": "Best Seller"
+  },
+  {
+    "product_id": 2,
+    "product_title": "Smartphone Y2",
+    "product_image": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1227&q=80",
+    "category": "phones",
+    "price": 699.99,
+    "description": "Latest smartphone with 128GB storage and stunning camera.",
+    "specifications": [
+      "128GB Storage",
+      "12MP Dual Camera",
+      "5G Capable",
+      "6.5 inch Display"
+    ],
+    "availability": true,
+    "rating": 4.6,
+    "other_field": "New Arrival"
+  },
+  {
+    "product_id": 3,
+    "product_title": "Smart Watch Z1",
+    "product_image": "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80",
+    "category": "smart watches",
+    "price": 199.99,
+    "description": "Stylish smartwatch with health tracking features.",
+    "specifications": [
+      "Heart Rate Monitor",
+      "GPS Functionality",
+      "Water Resistant",
+      "Battery Life: 7 days"
+    ],
+    "availability": true,
+    "rating": 4.5,
+    "other_field": "Popular Choice"
+  },
+  {
+    "product_id": 4,
+    "product_title": "Wireless Charger",
+    "product_image": "https://images.unsplash.com/photo-1608069641975-e4a11d0cd223?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+    "category": "chargers",
+    "price": 49.99,
+    "description": "Fast wireless charging for all compatible devices.",
+    "specifications": [
+      "Compatible with Qi-enabled devices",
+      "LED Charging Indicator",
+      "Anti-slip design"
+    ],
+    "availability": true,
+    "rating": 4.7,
+    "other_field": "Best Value"
+  },
+  {
+    "product_id": 5,
+    "product_title": "Portable Power Bank",
+    "product_image": "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+    "category": "power banks",
+    "price": 29.99,
+    "description": "High-capacity power bank for on-the-go charging.",
+    "specifications": [
+      "10,000mAh Capacity",
+      "Dual USB Output",
+      "Compact Design"
+    ],
+    "availability": true,
+    "rating": 4.3,
+    "other_field": "Recommended"
+  },
+  {
+    "product_id": 6,
+    "product_title": "Laptop X2",
+    "product_image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1168&q=80",
+    "category": "computers",
+    "price": 1199.99,
+    "description": "Premium laptop with top-tier performance.",
+    "specifications": [
+      "32GB RAM",
+      "1TB SSD",
+      "Intel i9 Processor",
+      "15.6 inch 4K Display"
+    ],
+    "availability": true,
+    "rating": 4.9,
+    "other_field": "Editor's Choice"
+  },
+  {
+    "product_id": 7,
+    "product_title": "Smartphone Z3",
+    "product_image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1160&q=80",
+    "category": "phones",
+    "price": 799.99,
+    "description": "Smartphone with advanced camera and performance.",
+    "specifications": [
+      "256GB Storage",
+      "48MP Triple Camera",
+      "6.7 inch Display"
+    ],
+    "availability": false,
+    "rating": 4.4,
+    "other_field": "Out of Stock"
+  },
+  {
+    "product_id": 8,
+    "product_title": "Smart Watch X2",
+    "product_image": "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1227&q=80",
+    "category": "smart watches",
+    "price": 249.99,
+    "description": "Advanced smartwatch with fitness tracking.",
+    "specifications": [
+      "Sleep Monitor",
+      "Step Counter",
+      "Customizable Watch Faces"
+    ],
+    "availability": true,
+    "rating": 4.6,
+    "other_field": "Trending Now"
+  },
+  {
+    "product_id": 9,
+    "product_title": "USB-C Charger",
+    "product_image": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+    "category": "chargers",
+    "price": 19.99,
+    "description": "Fast charging USB-C charger for all devices.",
+    "specifications": [
+      "20W Power Delivery",
+      "Compact Design",
+      "Built-in Protection"
+    ],
+    "availability": true,
+    "rating": 4.8,
+    "other_field": "Customer Favorite"
+  },
+  {
+    "product_id": 10,
+    "product_title": "Solar Power Bank",
+    "product_image": "https://images.unsplash.com/photo-1620735692151-26a7e0748429?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+    "category": "power banks",
+    "price": 39.99,
+    "description": "Eco-friendly solar power bank for outdoor use.",
+    "specifications": [
+      "20,000mAh Capacity",
+      "Dual USB Outputs",
+      "Water Resistant"
+    ],
+    "availability": true,
+    "rating": 4.5,
+    "other_field": "Eco-Friendly Choice"
+  }
+]

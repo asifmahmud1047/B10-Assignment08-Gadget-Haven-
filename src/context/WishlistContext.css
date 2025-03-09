@@ -1,0 +1,13 @@
+.wishlist-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.wishlist-item h4 {
+  margin: 0;
+}
+
+.wishlist-item .remove-button {
+  color: red;
+  cursor: pointer;
+}

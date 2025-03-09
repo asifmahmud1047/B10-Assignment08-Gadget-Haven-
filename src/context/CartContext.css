@@ -1,0 +1,13 @@
+.cart-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item h4 {
+  margin: 0;
+}
+
+.cart-item .remove-button {
+  color: red;
+  cursor: pointer;
+}
