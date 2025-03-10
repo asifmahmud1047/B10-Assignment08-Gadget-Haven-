@@ -4,16 +4,16 @@ import "./AdditionalPage.css";
 const AdditionalPage = () => {
   return (
     <div className="additional-page">
-      <h1 className="additional-page-title">About GadgetHaven</h1>
+      <h1 className="additional-page-title">About Gadget Heaven</h1>
       <p className="additional-page-text">
-        Welcome to GadgetHaven! We are your one-stop destination for the latest
+        Welcome to Gadget Heaven! We are your one-stop destination for the latest
         and greatest gadgets. From computers and phones to smart watches and
         power banks, we bring you a curated selection of top-quality gadgets at
         unbeatable prices. Our mission is to make the latest technology
         accessible to everyone.
       </p>
       <p className="additional-page-text">
-        At GadgetHaven, customer satisfaction is our top priority. We are
+        At Gadget Heaven, customer satisfaction is our top priority. We are
         committed to providing a seamless shopping experience with a dedicated
         support team ready to assist you.
       </p>
@@ -25,7 +25,7 @@ const AdditionalPage = () => {
         <li>Excellent customer service</li>
       </ul>
       <p className="additional-page-text">
-        Thank you for choosing GadgetHaven. We look forward to serving you with
+        Thank you for choosing Gadget Heaven. We look forward to serving you with
         the best in tech!
       </p>
     </div>

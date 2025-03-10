@@ -36,7 +36,7 @@ function Navbar() {
     <nav className={`navbar ${location.pathname === "/" ? "home-navbar" : ""}`}>
       <div className="navbar-logo">
         <NavLink to="/">
-          <span className="logo-text">GadgetHaven</span>
+          <span className="logo-text">Gadget Heaven</span>
           <span className="logo-sparkle">✨</span>
         </NavLink>
       </div>

@@ -1,9 +1,9 @@
-# GadgetHaven✨ - E-commerce Platform
+# Gadget Heaven✨ - E-commerce Platform
 
-GadgetHaven is a modern e-commerce platform for gadget enthusiasts, offering a wide range of electronic devices and accessories. This project was built using React and implements various features to provide a seamless shopping experience.
+Gadget Heaven is a modern e-commerce platform for gadget enthusiasts, offering a wide range of electronic devices and accessories. This project was built using React and implements various features to provide a seamless shopping experience.
 
 ## Live Website Link
-[GadgetHaven Live Site](https://gadgethaven.netlify.app)
+[Gadget Heaven Live Site](https://gadgetheaven.netlify.app)
 
 ## Features
 

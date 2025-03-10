@@ -37,10 +37,21 @@
   margin-bottom: 2rem;
 }
 
-/* Ensure consistent card sizes */
-@media (min-width: 768px) {
+/* Optimize for desktop screens */
+@media (min-width: 992px) {
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Optimize specifically for tablet screens */
+@media (min-width: 768px) and (max-width: 991px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr); /* Force exactly 2 columns on tablets */
+    gap: 1.25rem; /* Reduced gap to fit more content */
+    max-width: 95%; /* Prevent grid from touching screen edges */
+    margin: 0 auto 2rem auto; /* Center the grid */
   }
 }
 
@@ -232,4 +243,13 @@
   padding: 0.5rem;
   cursor: pointer;
   width: 100%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .category-title {
+    font-size: 1.6rem; /* Larger title for better visibility */
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid #e0e0e0; /* Darker border for better visibility */
+  }
 }

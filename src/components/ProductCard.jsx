@@ -1,19 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle, faImage } from "@fortawesome/free-solid-svg-icons";
 import ReactStars from "react-rating-stars-component";
 import PropTypes from "prop-types";
 import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const [isImageVisible, setIsImageVisible] = useState(false);
 
-  const handleImageError = () => {
-    console.error(`Error loading image for product: ${product.product_title} (ID: ${product.product_id})`);
-    console.error(`Image path that failed: ${product.product_image}`);
-    setImageError(true);
-  };
+  // Check if device is tablet
+  useEffect(() => {
+    const checkTablet = () => {
+      const width = window.innerWidth;
+      setIsTablet(width >= 768 && width <= 991);
+    };
+    
+    // Initial check
+    checkTablet();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkTablet);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkTablet);
+  }, []);
+
+  // Use Intersection Observer to load images only when they come into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsImageVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentElement = document.getElementById(`product-card-${product.product_id}`);
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, [product.product_id]);
+
+  // Preload image to check if it exists
+  useEffect(() => {
+    if (!isImageVisible) return;
+
+    const img = new Image();
+    img.src = product.product_image;
+    
+    img.onload = () => {
+      setImageLoaded(true);
+      setImageError(false);
+    };
+    
+    img.onerror = () => {
+      console.error(`Error loading image for product: ${product.product_title} (ID: ${product.product_id})`);
+      console.error(`Image path that failed: ${product.product_image}`);
+      setImageError(true);
+    };
+
+    // Set a timeout to show placeholder if image takes too long to load
+    const timeoutId = setTimeout(() => {
+      if (!imageLoaded && !imageError) {
+        console.warn(`Image loading timeout for product: ${product.product_title}`);
+        setImageError(true);
+      }
+    }, 3000); // 3 seconds timeout (reduced from 5)
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [product.product_image, product.product_id, product.product_title, imageLoaded, isImageVisible]);
 
   // Get CSS class for category
   const getCategoryClass = (category) => {
@@ -21,24 +90,57 @@ const ProductCard = ({ product }) => {
     return `category-${formattedCategory}`;
   };
 
+  // Format price with commas for thousands
+  const formatPrice = (price) => {
+    return price.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2
+    });
+  };
+
+  // Truncate title for tablet view
+  const getTruncatedTitle = (title) => {
+    if (isTablet && title.length > 35) {
+      return title.substring(0, 35) + '...';
+    }
+    return title;
+  };
+
   return (
-    <div className="product-card">
+    <div className="product-card" id={`product-card-${product.product_id}`}>
       <div className="product-image-container">
         {imageError ? (
           <div 
             className={`image-placeholder ${getCategoryClass(product.category)}`}
           >
-            <FontAwesomeIcon icon={faInfoCircle} size="3x" />
-            <p>{product.product_title}</p>
+            <FontAwesomeIcon icon={faImage} size={isTablet ? "2x" : "2x"} />
+            <p>{isTablet ? getTruncatedTitle(product.product_title) : product.product_title}</p>
           </div>
         ) : (
-          <img
-            src={product.product_image}
-            alt={product.product_title}
-            className="product-image"
-            onError={handleImageError}
-            loading="lazy"
-          />
+          <>
+            {isImageVisible && (
+              <img
+                src={product.product_image}
+                alt={product.product_title}
+                className="product-image"
+                onError={() => setImageError(true)}
+                onLoad={() => setImageLoaded(true)}
+                loading="lazy"
+                style={{ 
+                  opacity: imageLoaded ? 1 : 0, 
+                  transition: 'opacity 0.3s ease',
+                  transform: isTablet ? 'scale(1.05)' : 'none' // Slightly larger images on tablet
+                }}
+              />
+            )}
+            {(!imageLoaded || !isImageVisible) && !imageError && (
+              <div className={`image-placeholder ${getCategoryClass(product.category)}`}>
+                <FontAwesomeIcon icon={faInfoCircle} spin size={isTablet ? "2x" : "2x"} />
+                <p>Loading...</p>
+              </div>
+            )}
+          </>
         )}
         {!product.availability && (
           <div className="out-of-stock-badge">Out of Stock</div>
@@ -46,23 +148,23 @@ const ProductCard = ({ product }) => {
       </div>
       
       <div className="product-info">
-        <h3 className="product-title">{product.product_title}</h3>
+        <h3 className="product-title">{isTablet ? getTruncatedTitle(product.product_title) : product.product_title}</h3>
         
         <div className="product-rating">
           <ReactStars
             count={5}
             value={product.rating}
-            size={18}
+            size={isTablet ? 18 : 18}
             edit={false}
             activeColor="#ffd700"
           />
           <span>({product.rating})</span>
         </div>
         
-        <p className="product-price">${product.price}</p>
+        <p className="product-price">{formatPrice(product.price)}</p>
         
         <Link to={`/details/${product.product_id}`} className="details-button">
-          <FontAwesomeIcon icon={faInfoCircle} /> Details
+          <FontAwesomeIcon icon={faInfoCircle} /> {isTablet ? "View" : "View Details"}
         </Link>
       </div>
     </div>

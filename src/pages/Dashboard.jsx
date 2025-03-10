@@ -22,7 +22,7 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <Helmet>
-        <title>GadgetHaven - Dashboard</title>
+        <title>Gadget Heaven - Dashboard</title>
       </Helmet>
       <h1>Your Dashboard</h1>
       

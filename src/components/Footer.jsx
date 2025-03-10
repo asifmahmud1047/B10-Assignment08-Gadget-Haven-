@@ -7,7 +7,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer-section">
-        <h3>GadgetHaven</h3>
+        <h3>Gadget Heaven</h3>
         <p>Your one-stop shop for all the latest gadgets.</p>
       </div>
 
@@ -50,7 +50,7 @@ function Footer() {
 
         <div className="footer-section">
           <h4>Contact Us</h4>
-          <p>Email: support@gadgethaven.com</p>
+          <p>Email: support@gadgetheaven.com</p>
           <p>Phone: +1 234 567 890</p>
           <p>Address: 123 Tech Street, Digital City</p>
         </div>
@@ -87,7 +87,7 @@ function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} GadgetHaven. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Gadget Heaven. All rights reserved.</p>
       </div>
     </footer>
   );

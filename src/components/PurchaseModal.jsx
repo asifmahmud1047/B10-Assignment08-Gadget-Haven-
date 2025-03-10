@@ -26,7 +26,7 @@ const PurchaseModal = ({ show, onClose }) => {
         </div>
         <h2>Congratulations!</h2>
         <p>Your purchase has been successful.</p>
-        <p>Thank you for shopping with GadgetHaven!</p>
+        <p>Thank you for shopping with Gadget Heaven!</p>
         <button className="close-button" onClick={handleClose}>
           Close
         </button>

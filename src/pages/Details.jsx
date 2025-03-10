@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faHeart, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faHeart, faInfoCircle, faImage, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ReactStars from "react-rating-stars-component";
 import "./Details.css";
 
@@ -14,10 +14,32 @@ function Details() {
   const [loading, setLoading] = useState(true);
   const [inWishlist, setInWishlist] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const { addToCart } = useCart();
   const { addToWishlist, wishlistItems } = useWishlist();
 
+  // Check if device is tablet
   useEffect(() => {
+    const checkTablet = () => {
+      const width = window.innerWidth;
+      setIsTablet(width >= 768 && width <= 991);
+    };
+    
+    // Initial check
+    checkTablet();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkTablet);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkTablet);
+  }, []);
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
     // Fetch product data
     fetch("/products.json")
       .then((response) => response.json())
@@ -40,20 +62,78 @@ function Details() {
       });
   }, [id, wishlistItems]);
 
-  const handleImageError = () => {
-    console.error(`Error loading image for product: ${product.product_title} (ID: ${product.product_id})`);
-    console.error(`Image path that failed: ${product.product_image}`);
-    setImageError(true);
-  };
+  // Preload image to check if it exists
+  useEffect(() => {
+    if (product && product.product_image) {
+      // Set a small timeout to prioritize page layout before loading image
+      const timeoutId = setTimeout(() => {
+        const img = new Image();
+        img.src = product.product_image;
+        
+        img.onload = () => {
+          setImageLoaded(true);
+          setImageError(false);
+        };
+        
+        img.onerror = () => {
+          console.error(`Error loading image for product: ${product.product_title} (ID: ${product.product_id})`);
+          console.error(`Image path that failed: ${product.product_image}`);
+          setImageError(true);
+        };
+      }, 100);
+
+      // Set a timeout to show placeholder if image takes too long to load
+      const loadTimeoutId = setTimeout(() => {
+        if (!imageLoaded && !imageError) {
+          console.warn(`Image loading timeout for product: ${product.product_title}`);
+          setImageError(true);
+        }
+      }, 3000); // 3 seconds timeout (reduced from 5)
+
+      return () => {
+        clearTimeout(timeoutId);
+        clearTimeout(loadTimeoutId);
+      };
+    }
+  }, [product, imageLoaded, imageError]);
 
   const getCategoryClass = (category) => {
     const formattedCategory = category.replace(/\s+/g, '-').toLowerCase();
     return `category-${formattedCategory}`;
   };
 
+  // Format price with commas for thousands
+  const formatPrice = (price) => {
+    return price.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2
+    });
+  };
+
+  // Format specifications for tablet view
+  const getFormattedSpecs = (specs) => {
+    if (isTablet) {
+      // For tablet, limit to 3 specs max and truncate if too long
+      return specs.slice(0, 3).map(spec => 
+        spec.length > 60 ? spec.substring(0, 60) + '...' : spec
+      );
+    }
+    return specs;
+  };
+
+  // Format description for tablet view
+  const getFormattedDescription = (description) => {
+    if (isTablet && description.length > 150) {
+      return description.substring(0, 150) + '...';
+    }
+    return description;
+  };
+
   const handleAddToCart = () => {
     if (product) {
       addToCart(product);
+      alert(`${product.product_title} has been added to your cart!`);
     }
   };
 
@@ -61,11 +141,17 @@ function Details() {
     if (product && !inWishlist) {
       addToWishlist(product);
       setInWishlist(true);
+      alert(`${product.product_title} has been added to your wishlist!`);
     }
   };
 
   if (loading) {
-    return <div className="loading">Loading product details...</div>;
+    return (
+      <div className="loading">
+        <FontAwesomeIcon icon={faInfoCircle} spin size={isTablet ? "2x" : "2x"} style={{ marginRight: '10px' }} />
+        Loading product details...
+      </div>
+    );
   }
 
   if (!product) {
@@ -74,6 +160,7 @@ function Details() {
         <h2>Product Not Found</h2>
         <p>The product you&apos;re looking for doesn&apos;t exist.</p>
         <Link to="/" className="back-button">
+          <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: '8px' }} />
           Back to Home
         </Link>
       </div>
@@ -83,7 +170,7 @@ function Details() {
   return (
     <div className="details-container">
       <Helmet>
-        <title>GadgetHaven - {product.product_title}</title>
+        <title>Gadget Heaven - {product.product_title}</title>
       </Helmet>
       <div className="product-details">
         <div className="product-image-container">
@@ -91,49 +178,75 @@ function Details() {
             <div 
               className={`details-image-placeholder ${getCategoryClass(product.category)}`}
             >
-              <FontAwesomeIcon icon={faInfoCircle} size="3x" />
-              <p>{product.product_title}</p>
+              <FontAwesomeIcon icon={faImage} size={isTablet ? "3x" : "3x"} />
+              <p>{isTablet && product.product_title.length > 30 
+                ? product.product_title.substring(0, 30) + '...' 
+                : product.product_title}</p>
             </div>
           ) : (
-            <img
-              src={product.product_image}
-              alt={product.product_title}
-              className="product-image"
-              onError={handleImageError}
-              loading="lazy"
-            />
+            <>
+              <img
+                src={product.product_image}
+                alt={product.product_title}
+                className="product-image"
+                onError={() => setImageError(true)}
+                onLoad={() => setImageLoaded(true)}
+                loading="lazy"
+                style={{ 
+                  opacity: imageLoaded ? 1 : 0, 
+                  transition: 'opacity 0.5s ease',
+                  transform: isTablet ? 'scale(1.05)' : 'none' // Slightly larger images on tablet
+                }}
+              />
+              {!imageLoaded && !imageError && (
+                <div className={`details-image-placeholder ${getCategoryClass(product.category)}`}>
+                  <FontAwesomeIcon icon={faInfoCircle} spin size={isTablet ? "3x" : "3x"} />
+                  <p>Loading product image...</p>
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className="product-info">
-          <h1 className="product-title">{product.product_title}</h1>
+          <h1 className="product-title">
+            {isTablet && product.product_title.length > 40 
+              ? product.product_title.substring(0, 40) + '...' 
+              : product.product_title}
+          </h1>
           
           <div className="product-rating">
             <ReactStars
               count={5}
               value={product.rating}
-              size={24}
+              size={isTablet ? 22 : 24}
               edit={false}
               activeColor="#ffd700"
             />
             <span>({product.rating})</span>
           </div>
           
-          <p className="product-price">${product.price}</p>
+          <p className="product-price">{formatPrice(product.price)}</p>
           
           <div className="product-availability">
             {product.availability ? (
-              <span className="in-stock">In Stock</span>
+              <span className="in-stock">
+                <FontAwesomeIcon icon={faInfoCircle} style={{ marginRight: '5px' }} />
+                In Stock
+              </span>
             ) : (
-              <span className="out-of-stock">Out of Stock</span>
+              <span className="out-of-stock">
+                <FontAwesomeIcon icon={faInfoCircle} style={{ marginRight: '5px' }} />
+                Out of Stock
+              </span>
             )}
           </div>
           
-          <p className="product-description">{product.description}</p>
+          <p className="product-description">{getFormattedDescription(product.description)}</p>
           
           <div className="product-specifications">
             <h3>Specifications:</h3>
             <ul>
-              {product.specifications.map((spec, index) => (
+              {getFormattedSpecs(product.specifications).map((spec, index) => (
                 <li key={index}>{spec}</li>
               ))}
             </ul>
@@ -145,12 +258,13 @@ function Details() {
               onClick={handleAddToCart}
               disabled={!product.availability}
             >
-              <FontAwesomeIcon icon={faShoppingCart} /> Add to Cart
+              <FontAwesomeIcon icon={faShoppingCart} /> {isTablet ? "Add to Cart" : "Add to Cart"}
             </button>
             <button
               className={`wishlist-button ${inWishlist ? "in-wishlist" : ""}`}
               onClick={handleAddToWishlist}
               disabled={inWishlist}
+              title={inWishlist ? "Already in wishlist" : "Add to wishlist"}
             >
               <FontAwesomeIcon icon={faHeart} />
             </button>

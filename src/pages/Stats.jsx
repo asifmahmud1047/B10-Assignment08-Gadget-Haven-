@@ -44,7 +44,7 @@ const Stats = () => {
   return (
     <div className="stats-container">
       <Helmet>
-        <title>GadgetHaven - Statistics</title>
+        <title>Gadget Heaven - Statistics</title>
       </Helmet>
       <h1>Product Statistics</h1>
       <p>This chart shows the price and rating distribution of our products.</p>

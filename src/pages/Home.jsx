@@ -74,8 +74,8 @@ function Home() {
   return (
     <div className="home-container">
       <Helmet>
-        <title>GadgetHaven - Your go-to destination for the latest gadgets</title>
-        <meta name="description" content="Discover the latest and greatest gadgets at GadgetHaven. Shop computers, phones, smart watches, and more." />
+        <title>Gadget Heaven - Your go-to destination for the latest gadgets</title>
+        <meta name="description" content="Discover the latest and greatest gadgets at Gadget Heaven. Shop computers, phones, smart watches, and more." />
       </Helmet>
       
       <Banner />
