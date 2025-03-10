@@ -37,6 +37,13 @@
   margin-bottom: 2rem;
 }
 
+/* Ensure consistent card sizes */
+@media (min-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
 @media (max-width: 576px) {
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

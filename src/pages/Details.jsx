@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faHeart, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import ReactStars from "react-rating-stars-component";
 import "./Details.css";
 
@@ -13,6 +13,7 @@ function Details() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [inWishlist, setInWishlist] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { addToCart } = useCart();
   const { addToWishlist, wishlistItems } = useWishlist();
 
@@ -38,6 +39,17 @@ function Details() {
         setLoading(false);
       });
   }, [id, wishlistItems]);
+
+  const handleImageError = () => {
+    console.error(`Error loading image for product: ${product.product_title} (ID: ${product.product_id})`);
+    console.error(`Image path that failed: ${product.product_image}`);
+    setImageError(true);
+  };
+
+  const getCategoryClass = (category) => {
+    const formattedCategory = category.replace(/\s+/g, '-').toLowerCase();
+    return `category-${formattedCategory}`;
+  };
 
   const handleAddToCart = () => {
     if (product) {
@@ -75,11 +87,22 @@ function Details() {
       </Helmet>
       <div className="product-details">
         <div className="product-image-container">
-          <img
-            src={product.product_image}
-            alt={product.product_title}
-            className="product-image"
-          />
+          {imageError ? (
+            <div 
+              className={`details-image-placeholder ${getCategoryClass(product.category)}`}
+            >
+              <FontAwesomeIcon icon={faInfoCircle} size="3x" />
+              <p>{product.product_title}</p>
+            </div>
+          ) : (
+            <img
+              src={product.product_image}
+              alt={product.product_title}
+              className="product-image"
+              onError={handleImageError}
+              loading="lazy"
+            />
+          )}
         </div>
         <div className="product-info">
           <h1 className="product-title">{product.product_title}</h1>
