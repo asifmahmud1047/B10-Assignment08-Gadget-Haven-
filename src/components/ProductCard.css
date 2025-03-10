@@ -19,6 +19,16 @@
   position: relative;
   height: 200px;
   overflow: hidden;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 576px) {
+  .product-image-container {
+    height: 180px;
+  }
 }
 
 .product-image {
@@ -26,6 +36,34 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s;
+}
+
+.image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  text-align: center;
+  color: white;
+  font-weight: 500;
+}
+
+.image-placeholder p {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+  .image-placeholder p {
+    font-size: 0.8rem;
+  }
 }
 
 .product-card:hover .product-image {
@@ -51,6 +89,12 @@
   flex-direction: column;
 }
 
+@media (max-width: 576px) {
+  .product-info {
+    padding: 1rem;
+  }
+}
+
 .product-title {
   font-size: 1.1rem;
   color: #333;
@@ -62,6 +106,12 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (max-width: 576px) {
+  .product-title {
+    font-size: 1rem;
+  }
 }
 
 .product-rating {
@@ -84,6 +134,13 @@
   margin-top: auto;
 }
 
+@media (max-width: 576px) {
+  .product-price {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
 .details-button {
   display: inline-block;
   width: 100%;
@@ -95,8 +152,44 @@
   border-radius: 4px;
   font-weight: 500;
   transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 576px) {
+  .details-button {
+    padding: 0.6rem 0;
+    font-size: 0.9rem;
+  }
 }
 
 .details-button:hover {
   background-color: #2980b9;
+}
+
+/* Category-specific colors for placeholders */
+.category-computers {
+  background-color: #3498db;
+}
+
+.category-phones {
+  background-color: #e74c3c;
+}
+
+.category-smart-watches {
+  background-color: #2ecc71;
+}
+
+.category-chargers {
+  background-color: #f39c12;
+}
+
+.category-power-banks {
+  background-color: #9b59b6;
+}
+
+.category-default {
+  background-color: #95a5a6;
 }

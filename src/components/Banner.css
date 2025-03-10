@@ -90,3 +90,55 @@
     opacity: 1;
   }
 }
+
+/* Tablet Styles */
+@media (max-width: 992px) {
+  .banner {
+    height: 350px;
+  }
+  
+  .banner h1 {
+    font-size: 2.5rem;
+  }
+  
+  .banner p {
+    font-size: 1.1rem;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .banner {
+    height: 300px;
+  }
+  
+  .banner h1 {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .banner p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .banner-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+  .banner {
+    height: 250px;
+  }
+  
+  .banner h1 {
+    font-size: 1.75rem;
+  }
+  
+  .banner-content {
+    padding: 0 1rem;
+  }
+}

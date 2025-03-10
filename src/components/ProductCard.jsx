@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -6,14 +7,39 @@ import PropTypes from "prop-types";
 import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    console.error(`Error loading image for product: ${product.product_title} (ID: ${product.product_id})`);
+    console.error(`Image path that failed: ${product.product_image}`);
+    setImageError(true);
+  };
+
+  // Get CSS class for category
+  const getCategoryClass = (category) => {
+    const formattedCategory = category.replace(/\s+/g, '-').toLowerCase();
+    return `category-${formattedCategory}`;
+  };
+
   return (
     <div className="product-card">
       <div className="product-image-container">
-        <img
-          src={product.product_image}
-          alt={product.product_title}
-          className="product-image"
-        />
+        {imageError ? (
+          <div 
+            className={`image-placeholder ${getCategoryClass(product.category)}`}
+          >
+            <FontAwesomeIcon icon={faInfoCircle} size="3x" />
+            <p>{product.product_title}</p>
+          </div>
+        ) : (
+          <img
+            src={product.product_image}
+            alt={product.product_title}
+            className="product-image"
+            onError={handleImageError}
+            loading="lazy"
+          />
+        )}
         {!product.availability && (
           <div className="out-of-stock-badge">Out of Stock</div>
         )}
@@ -48,6 +74,7 @@ ProductCard.propTypes = {
     product_id: PropTypes.number.isRequired,
     product_title: PropTypes.string.isRequired,
     product_image: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     rating: PropTypes.number.isRequired,
     availability: PropTypes.bool.isRequired

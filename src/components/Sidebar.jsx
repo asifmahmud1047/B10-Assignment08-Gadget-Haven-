@@ -6,6 +6,7 @@ import {
   faClock,
   faBolt,
   faBatteryFull,
+  faLayerGroup
 } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
 import "./Sidebar.css";
@@ -13,26 +14,34 @@ import "./Sidebar.css";
 const Sidebar = ({ onCategorySelect, selectedCategory }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Fetch products to extract categories
     fetch("/products.json")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         // Extract unique categories
         const uniqueCategories = [...new Set(data.map((item) => item.category))];
+        console.log("Extracted categories:", uniqueCategories);
         setCategories(uniqueCategories);
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
+        setError(error.message);
         setLoading(false);
       });
   }, []);
 
   // Map category names to icons
   const getCategoryIcon = (category) => {
-    switch (category.toLowerCase()) {
+    switch (category) {
       case "computers":
         return faLaptop;
       case "phones":
@@ -44,9 +53,17 @@ const Sidebar = ({ onCategorySelect, selectedCategory }) => {
       case "power banks":
         return faBatteryFull;
       default:
-        return faLaptop;
+        return faLayerGroup;
     }
   };
+
+  if (error) {
+    return (
+      <div className="sidebar-error">
+        <p>Error loading categories</p>
+      </div>
+    );
+  }
 
   return (
     <div className="sidebar">
@@ -59,6 +76,7 @@ const Sidebar = ({ onCategorySelect, selectedCategory }) => {
             className={selectedCategory === "all" ? "active" : ""}
             onClick={() => onCategorySelect("all")}
           >
+            <FontAwesomeIcon icon={faLayerGroup} />
             <span>All Products</span>
           </li>
           {categories.map((category) => (
