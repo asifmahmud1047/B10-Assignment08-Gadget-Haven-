@@ -30,10 +30,11 @@
   }
 }
 
-/* Increase height for desktop */
+/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-image-container {
-    padding-top: 75%; /* Standard 4:3 aspect ratio for desktops */
+    padding-top: 70%; /* Reduced height ratio for laptops to show more content */
+    border-bottom: 1px solid #f0f0f0;
   }
 }
 
@@ -57,10 +58,11 @@
   }
 }
 
-/* Adjust padding for larger screens */
+/* Adjust padding for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-image {
-    padding: 20px; /* More padding on desktop screens */
+    padding: 15px; /* Reduced padding on laptop screens for larger images */
+    object-fit: contain;
   }
 }
 
@@ -96,7 +98,7 @@
   }
 }
 
-/* Increase font size for larger screens */
+/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .image-placeholder p {
     font-size: 1.1rem;
@@ -147,9 +149,10 @@
   }
 }
 
+/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-info {
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem; /* Increased horizontal padding for better readability */
   }
 }
 
@@ -185,12 +188,15 @@
   }
 }
 
-/* Increase font size for larger screens */
+/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-title {
-    font-size: 1.2rem;
-    height: 3em;
+    font-size: 1.3rem; /* Larger font size for laptop screens */
+    line-height: 1.4;
+    height: 2.8em;
     margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: #222; /* Darker text for better contrast */
   }
 }
 
@@ -216,9 +222,11 @@
   }
 }
 
+/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-rating {
     margin-bottom: 0.75rem;
+    gap: 0.5rem;
   }
 }
 
@@ -234,10 +242,11 @@
   }
 }
 
-/* Increase font size for larger screens */
+/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-rating span {
-    font-size: 0.95rem;
+    font-size: 1rem; /* Increased font size for better readability */
+    color: #555; /* Darker color for better contrast */
   }
 }
 
@@ -258,11 +267,12 @@
   }
 }
 
-/* Increase font size for larger screens */
+/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-price {
-    font-size: 1.3rem;
-    margin-bottom: 1.25rem;
+    font-size: 1.4rem; /* Larger font size for laptop screens */
+    margin-bottom: 1rem;
+    color: #d44; /* Slightly darker red for better contrast */
   }
 }
 
@@ -301,11 +311,15 @@
   }
 }
 
-/* Increase padding for larger screens */
+/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .details-button {
-    padding: 0.85rem 0;
-    font-size: 1.05rem;
+    padding: 0.85rem 0; /* Increased padding for better visibility */
+    font-size: 1.1rem; /* Larger font size for laptop screens */
+    font-weight: 600;
+    background-color: #2980b9; /* Darker blue for better visibility */
+    border-radius: 6px; /* Slightly more rounded corners */
+    letter-spacing: 0.5px; /* Improved letter spacing for readability */
   }
 }
 

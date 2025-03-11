@@ -37,11 +37,13 @@
   margin-bottom: 2rem;
 }
 
-/* Optimize for desktop screens */
+/* Optimize for desktop/laptop screens */
 @media (min-width: 992px) {
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns for better readability */
     gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
   }
 }
 
@@ -52,6 +54,14 @@
     gap: 1.25rem; /* Reduced gap to fit more content */
     max-width: 95%; /* Prevent grid from touching screen edges */
     margin: 0 auto 2rem auto; /* Center the grid */
+  }
+}
+
+/* For large desktop screens */
+@media (min-width: 1400px) {
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on very large screens */
+    max-width: 1400px;
   }
 }
 
@@ -216,7 +226,7 @@
   border: 1px solid #ddd;
   padding: 1rem;
   text-align: center;
-  width: 100%;
+  width: auto;
 }
 
 @media (min-width: 576px) {

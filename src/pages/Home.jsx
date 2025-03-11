@@ -101,7 +101,7 @@ function Home() {
             </div>
           ) : (
             <>
-              <div className="products-grid">
+              <div className="products-grid product-card-container">
                 {filteredProducts.slice(0, visibleProducts).map((product) => (
                   <ProductCard key={product.product_id} product={product} />
                 ))}

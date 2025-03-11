@@ -10,23 +10,25 @@ const ProductCard = ({ product }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [isLaptop, setIsLaptop] = useState(false);
   const [isImageVisible, setIsImageVisible] = useState(false);
 
-  // Check if device is tablet
+  // Check device type
   useEffect(() => {
-    const checkTablet = () => {
+    const checkDeviceType = () => {
       const width = window.innerWidth;
       setIsTablet(width >= 768 && width <= 991);
+      setIsLaptop(width >= 992 && width <= 1399);
     };
     
     // Initial check
-    checkTablet();
+    checkDeviceType();
     
     // Add event listener for window resize
-    window.addEventListener('resize', checkTablet);
+    window.addEventListener('resize', checkDeviceType);
     
     // Cleanup
-    return () => window.removeEventListener('resize', checkTablet);
+    return () => window.removeEventListener('resize', checkDeviceType);
   }, []);
 
   // Use Intersection Observer to load images only when they come into view
@@ -77,7 +79,7 @@ const ProductCard = ({ product }) => {
         console.warn(`Image loading timeout for product: ${product.product_title}`);
         setImageError(true);
       }
-    }, 3000); // 3 seconds timeout (reduced from 5)
+    }, 3000); // 3 seconds timeout
 
     return () => {
       clearTimeout(timeoutId);
@@ -99,10 +101,12 @@ const ProductCard = ({ product }) => {
     });
   };
 
-  // Truncate title for tablet view
+  // Truncate title based on device type
   const getTruncatedTitle = (title) => {
     if (isTablet && title.length > 35) {
       return title.substring(0, 35) + '...';
+    } else if (isLaptop && title.length > 50) {
+      return title.substring(0, 50) + '...';
     }
     return title;
   };
@@ -114,8 +118,8 @@ const ProductCard = ({ product }) => {
           <div 
             className={`image-placeholder ${getCategoryClass(product.category)}`}
           >
-            <FontAwesomeIcon icon={faImage} size={isTablet ? "2x" : "2x"} />
-            <p>{isTablet ? getTruncatedTitle(product.product_title) : product.product_title}</p>
+            <FontAwesomeIcon icon={faImage} size={isTablet ? "2x" : isLaptop ? "3x" : "2x"} />
+            <p>{getTruncatedTitle(product.product_title)}</p>
           </div>
         ) : (
           <>
@@ -130,13 +134,13 @@ const ProductCard = ({ product }) => {
                 style={{ 
                   opacity: imageLoaded ? 1 : 0, 
                   transition: 'opacity 0.3s ease',
-                  transform: isTablet ? 'scale(1.05)' : 'none' // Slightly larger images on tablet
+                  transform: isTablet ? 'scale(1.05)' : isLaptop ? 'scale(1.02)' : 'none'
                 }}
               />
             )}
             {(!imageLoaded || !isImageVisible) && !imageError && (
               <div className={`image-placeholder ${getCategoryClass(product.category)}`}>
-                <FontAwesomeIcon icon={faInfoCircle} spin size={isTablet ? "2x" : "2x"} />
+                <FontAwesomeIcon icon={faInfoCircle} spin size={isTablet ? "2x" : isLaptop ? "3x" : "2x"} />
                 <p>Loading...</p>
               </div>
             )}
@@ -148,13 +152,13 @@ const ProductCard = ({ product }) => {
       </div>
       
       <div className="product-info">
-        <h3 className="product-title">{isTablet ? getTruncatedTitle(product.product_title) : product.product_title}</h3>
+        <h3 className="product-title">{getTruncatedTitle(product.product_title)}</h3>
         
         <div className="product-rating">
           <ReactStars
             count={5}
             value={product.rating}
-            size={isTablet ? 18 : 18}
+            size={isTablet ? 18 : isLaptop ? 20 : 18}
             edit={false}
             activeColor="#ffd700"
           />
