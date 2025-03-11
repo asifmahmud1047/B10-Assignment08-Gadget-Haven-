@@ -106,7 +106,7 @@ function Home() {
                   <ProductCard key={product.product_id} product={product} />
                 ))}
               </div>
-              
+
               {visibleProducts < filteredProducts.length && (
                 <div className="view-more-container">
                   <button 
@@ -115,7 +115,7 @@ function Home() {
                   >
                     View More <FontAwesomeIcon icon={faArrowDown} />
                   </button>
-                </div>
+            </div>
               )}
             </>
           )}

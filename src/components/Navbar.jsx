@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
 import "./Navbar.css";
 
 function Navbar() {
   const { cartItems } = useCart();
+  const { wishlistItems } = useWishlist();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -78,13 +80,24 @@ function Navbar() {
         </NavLink>
       </div>
       
-      <div className="cart-icon">
-        <NavLink to="/dashboard" className="cart-link">
-          <FontAwesomeIcon icon={faShoppingCart} />
-          {cartItems.length > 0 && (
-            <span className="cart-badge">{cartItems.length}</span>
-          )}
-        </NavLink>
+      <div className="nav-icons">
+        <div className="wishlist-icon">
+          <NavLink to="/dashboard?tab=wishlist" className="wishlist-link">
+            <FontAwesomeIcon icon={faHeart} />
+            {wishlistItems.length > 0 && (
+              <span className="wishlist-badge">{wishlistItems.length}</span>
+            )}
+          </NavLink>
+        </div>
+        
+        <div className="cart-icon">
+          <NavLink to="/dashboard" className="cart-link">
+            <FontAwesomeIcon icon={faShoppingCart} />
+            {cartItems.length > 0 && (
+              <span className="cart-badge">{cartItems.length}</span>
+            )}
+          </NavLink>
+        </div>
       </div>
     </nav>
   );

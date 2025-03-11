@@ -6,6 +6,7 @@ import { useWishlist } from "../context/WishlistContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faHeart, faInfoCircle, faImage, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ReactStars from "react-rating-stars-component";
+import { toast } from "react-toastify";
 import "./Details.css";
 
 function Details() {
@@ -132,8 +133,16 @@ function Details() {
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product);
-      alert(`${product.product_title} has been added to your cart!`);
+      try {
+        const success = addToCart(product);
+        // The toast notifications are handled in the CartContext
+        // No need to show additional toasts here
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        toast.error("Failed to add item to cart. Please try again.");
+      }
+    } else {
+      toast.error("Product information not available. Please try again later.");
     }
   };
 
@@ -141,7 +150,6 @@ function Details() {
     if (product && !inWishlist) {
       addToWishlist(product);
       setInWishlist(true);
-      alert(`${product.product_title} has been added to your wishlist!`);
     }
   };
 

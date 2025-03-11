@@ -74,23 +74,32 @@
   background-color: #3498db;
 }
 
-.cart-icon {
-  position: relative;
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
   z-index: 10;
 }
 
-.cart-link {
+.cart-icon, .wishlist-icon {
+  position: relative;
+}
+
+.cart-link, .wishlist-link {
   color: white;
   font-size: 1.2rem;
   text-decoration: none;
+  transition: color 0.3s;
 }
 
-.cart-badge {
+.cart-link:hover, .wishlist-link:hover {
+  color: #3498db;
+}
+
+.cart-badge, .wishlist-badge {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: #e74c3c;
-  color: white;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -99,6 +108,16 @@
   align-items: center;
   font-size: 0.75rem;
   font-weight: bold;
+}
+
+.cart-badge {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.wishlist-badge {
+  background-color: #e84393;
+  color: white;
 }
 
 .hamburger {
