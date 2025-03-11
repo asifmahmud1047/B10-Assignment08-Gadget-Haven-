@@ -20,6 +20,7 @@
 
 .products-container {
   flex: 1;
+  width: 100%;
 }
 
 .category-title {
@@ -30,20 +31,26 @@
   border-bottom: 2px solid #f0f0f0;
 }
 
+/* Improved grid layout for all screens */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  width: 100%;
 }
 
 /* Optimize for desktop/laptop screens */
 @media (min-width: 992px) {
   .products-grid {
     grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns for better readability */
-    gap: 2rem;
-    max-width: 1200px;
+    gap: 2.5rem; /* Increased gap for better spacing */
     margin: 0 auto 2rem auto;
+  }
+  
+  .category-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -51,17 +58,22 @@
 @media (min-width: 768px) and (max-width: 991px) {
   .products-grid {
     grid-template-columns: repeat(2, 1fr); /* Force exactly 2 columns on tablets */
-    gap: 1.25rem; /* Reduced gap to fit more content */
-    max-width: 95%; /* Prevent grid from touching screen edges */
+    gap: 1.5rem; /* Increased gap for better spacing */
     margin: 0 auto 2rem auto; /* Center the grid */
+  }
+  
+  .category-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.75rem;
   }
 }
 
 /* For large desktop screens */
 @media (min-width: 1400px) {
   .products-grid {
-    grid-template-columns: repeat(4, 1fr); /* 4 columns on very large screens */
+    grid-template-columns: repeat(3, 1fr); /* Keep 3 columns for consistency */
     max-width: 1400px;
+    gap: 3rem; /* Even more spacing for large screens */
   }
 }
 
@@ -69,6 +81,11 @@
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
+  }
+  
+  .category-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
   }
 }
 
@@ -165,6 +182,7 @@
   transform: translateY(3px);
 }
 
+/* Remove duplicate styles that aren't needed */
 .banner {
   background-color: #eee;
   padding: 2rem;
@@ -185,81 +203,25 @@
   cursor: pointer;
 }
 
-.content {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-}
-
-@media (min-width: 992px) {
-  .content {
-    flex-direction: row;
-  }
-}
-
-.categories {
-  width: 100%;
-  padding: 1rem;
-  background-color: #f5f5f5;
-}
-
-@media (min-width: 992px) {
-  .categories {
-    width: 20%;
-  }
-}
-
-.product-cards {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+/* Product card container specific styles */
+.product-card-container {
+  display: grid;
   width: 100%;
 }
 
-@media (min-width: 992px) {
-  .product-cards {
-    width: 80%;
-  }
-}
-
-.product-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  text-align: center;
-  width: auto;
-}
-
-@media (min-width: 576px) {
-  .product-card {
-    width: calc(50% - 0.5rem);
-  }
-}
-
-@media (min-width: 768px) {
-  .product-card {
-    width: calc(33.333% - 0.667rem);
-  }
-}
-
-.product-card img {
-  max-width: 100%;
-  height: auto;
-}
-
-.product-card button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.5rem;
-  cursor: pointer;
-  width: 100%;
-}
-
+/* Ensure consistent height for product cards */
 @media (min-width: 768px) and (max-width: 991px) {
-  .category-title {
-    font-size: 1.6rem; /* Larger title for better visibility */
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.6rem;
-    border-bottom: 2px solid #e0e0e0; /* Darker border for better visibility */
+  .product-card-container > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 992px) {
+  .product-card-container > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }

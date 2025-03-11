@@ -103,10 +103,10 @@ const ProductCard = ({ product }) => {
 
   // Truncate title based on device type
   const getTruncatedTitle = (title) => {
-    if (isTablet && title.length > 35) {
-      return title.substring(0, 35) + '...';
-    } else if (isLaptop && title.length > 50) {
-      return title.substring(0, 50) + '...';
+    if (isTablet && title.length > 40) {
+      return title.substring(0, 40) + '...';
+    } else if (isLaptop && title.length > 60) {
+      return title.substring(0, 60) + '...';
     }
     return title;
   };
@@ -118,7 +118,11 @@ const ProductCard = ({ product }) => {
           <div 
             className={`image-placeholder ${getCategoryClass(product.category)}`}
           >
-            <FontAwesomeIcon icon={faImage} size={isTablet ? "2x" : isLaptop ? "3x" : "2x"} />
+            <FontAwesomeIcon 
+              icon={faImage} 
+              size={isTablet ? "2x" : isLaptop ? "3x" : "2x"} 
+              color="#666"
+            />
             <p>{getTruncatedTitle(product.product_title)}</p>
           </div>
         ) : (
@@ -134,13 +138,18 @@ const ProductCard = ({ product }) => {
                 style={{ 
                   opacity: imageLoaded ? 1 : 0, 
                   transition: 'opacity 0.3s ease',
-                  transform: isTablet ? 'scale(1.05)' : isLaptop ? 'scale(1.02)' : 'none'
+                  transform: isTablet ? 'scale(1.02)' : isLaptop ? 'scale(1.02)' : 'none'
                 }}
               />
             )}
             {(!imageLoaded || !isImageVisible) && !imageError && (
               <div className={`image-placeholder ${getCategoryClass(product.category)}`}>
-                <FontAwesomeIcon icon={faInfoCircle} spin size={isTablet ? "2x" : isLaptop ? "3x" : "2x"} />
+                <FontAwesomeIcon 
+                  icon={faInfoCircle} 
+                  spin 
+                  size={isTablet ? "2x" : isLaptop ? "3x" : "2x"} 
+                  color="#3498db"
+                />
                 <p>Loading...</p>
               </div>
             )}
@@ -158,7 +167,7 @@ const ProductCard = ({ product }) => {
           <ReactStars
             count={5}
             value={product.rating}
-            size={isTablet ? 18 : isLaptop ? 20 : 18}
+            size={isTablet ? 20 : isLaptop ? 24 : 18}
             edit={false}
             activeColor="#ffd700"
           />
@@ -168,7 +177,8 @@ const ProductCard = ({ product }) => {
         <p className="product-price">{formatPrice(product.price)}</p>
         
         <Link to={`/details/${product.product_id}`} className="details-button">
-          <FontAwesomeIcon icon={faInfoCircle} /> {isTablet ? "View" : "View Details"}
+          <FontAwesomeIcon icon={faInfoCircle} size={isTablet || isLaptop ? "1x" : "sm"} /> 
+          {isTablet ? "View Details" : isLaptop ? "View Details" : "View Details"}
         </Link>
       </div>
     </div>
