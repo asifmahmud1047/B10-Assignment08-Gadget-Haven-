@@ -11,6 +11,8 @@
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .dashboard-container h1 {
@@ -19,6 +21,19 @@
   text-align: center;
   font-size: 2.2rem;
   font-weight: 700;
+  position: relative;
+}
+
+.dashboard-container h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #3498db;
+  border-radius: 3px;
 }
 
 .tabs {
@@ -26,6 +41,7 @@
   justify-content: center;
   margin-bottom: 2rem;
   border-bottom: 1px solid #e0e0e0;
+  position: relative;
 }
 
 .tab-button {
@@ -43,10 +59,12 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  z-index: 1;
 }
 
 .tab-button:hover {
   color: #3498db;
+  transform: translateY(-2px);
 }
 
 .tab-button.active {
@@ -67,10 +85,27 @@
   font-weight: bold;
   margin-left: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .tab-content {
   min-height: 300px;
+  position: relative;
 }
 
 .tab-header {
@@ -79,6 +114,8 @@
   align-items: center;
   margin-bottom: 2rem;
   flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed #e0e0e0;
 }
 
 .tab-header h2 {
@@ -86,6 +123,19 @@
   color: #2c3e50;
   font-size: 1.6rem;
   font-weight: 600;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.tab-header h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: #3498db;
+  border-radius: 3px;
 }
 
 .tab-actions {
@@ -125,6 +175,7 @@
 .sort-button:hover:not(:disabled) {
   background-color: #e0e0e0;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .sort-button:disabled {
@@ -141,6 +192,17 @@
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.wishlist-count {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #6c757d;
+  background-color: #f8f9fa;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
 }
 
 .items-grid {
@@ -171,11 +233,48 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 .item-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.item-card.item-removing {
+  animation: removeItem 0.5s forwards;
+  pointer-events: none;
+}
+
+.item-card.item-moving {
+  animation: moveItem 0.5s forwards;
+  pointer-events: none;
+}
+
+@keyframes removeItem {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+}
+
+@keyframes moveItem {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.9) translateX(-30px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateX(-60px);
+  }
 }
 
 .item-image {
@@ -185,6 +284,10 @@
   background-color: #f8f9fa;
   padding: 1rem;
   transition: all 0.3s;
+}
+
+.item-card:hover .item-image {
+  transform: scale(1.05);
 }
 
 .placeholder-image {
@@ -221,6 +324,19 @@
   font-weight: bold;
   margin-bottom: 1.5rem;
   font-size: 1.3rem;
+  position: relative;
+  display: inline-block;
+}
+
+.item-price::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background-color: #3498db;
+  border-radius: 2px;
 }
 
 .item-actions {
@@ -283,6 +399,9 @@
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .purchase-button:hover:not(:disabled) {
@@ -321,6 +440,25 @@
   opacity: 0.8;
 }
 
+.suggestion-button {
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  background-color: #e9ecef;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.suggestion-button:hover {
+  background-color: #dee2e6;
+  transform: translateY(-2px);
+}
+
 .cart-tab, .wishlist-tab {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -334,4 +472,107 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Confirmation Dialog */
+.confirmation-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.confirmation-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  animation: scaleIn 0.3s ease-in-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.confirmation-content h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.confirmation-content p {
+  margin-bottom: 1.5rem;
+  color: #6c757d;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cancel-button, .confirm-button {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.cancel-button {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.cancel-button:hover {
+  background-color: #dee2e6;
+}
+
+.confirm-button {
+  background-color: #dc3545;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.confirm-button:hover {
+  background-color: #c82333;
+}
+
+/* Loading state */
+.loading-state {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-spinner {
+  text-align: center;
+  color: #3498db;
+}
+
+.loading-spinner p {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #6c757d;
 }

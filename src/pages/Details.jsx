@@ -134,9 +134,25 @@ function Details() {
   const handleAddToCart = () => {
     if (product) {
       try {
-        const success = addToCart(product);
-        // The toast notifications are handled in the CartContext
-        // No need to show additional toasts here
+        console.log("Adding product to cart from Details page:", product);
+        
+        // Make sure the product has all required fields
+        const productToAdd = {
+          product_id: parseInt(product.product_id),
+          product_title: product.product_title,
+          product_image: product.product_image,
+          price: parseFloat(product.price),
+          category: product.category
+        };
+        
+        console.log("Formatted product for cart:", productToAdd);
+        const success = addToCart(productToAdd);
+        
+        if (success) {
+          console.log("Product successfully added to cart");
+        } else {
+          console.log("Failed to add product to cart");
+        }
       } catch (error) {
         console.error("Error adding to cart:", error);
         toast.error("Failed to add item to cart. Please try again.");
@@ -148,8 +164,31 @@ function Details() {
 
   const handleAddToWishlist = () => {
     if (product && !inWishlist) {
-      addToWishlist(product);
-      setInWishlist(true);
+      try {
+        console.log("Adding product to wishlist from Details page:", product);
+        
+        // Make sure the product has all required fields
+        const productToAdd = {
+          product_id: parseInt(product.product_id),
+          product_title: product.product_title,
+          product_image: product.product_image,
+          price: parseFloat(product.price),
+          category: product.category
+        };
+        
+        console.log("Formatted product for wishlist:", productToAdd);
+        const success = addToWishlist(productToAdd);
+        
+        if (success) {
+          console.log("Product successfully added to wishlist");
+          setInWishlist(true);
+        } else {
+          console.log("Failed to add product to wishlist");
+        }
+      } catch (error) {
+        console.error("Error adding to wishlist:", error);
+        toast.error("Failed to add item to wishlist. Please try again.");
+      }
     }
   };
 

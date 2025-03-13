@@ -19,6 +19,7 @@ export const WishlistProvider = ({ children }) => {
     try {
       // Load wishlist items from localStorage on initial render
       const savedWishlistItems = localStorage.getItem("wishlistItems");
+      console.log("Loading wishlist from localStorage:", savedWishlistItems);
       return savedWishlistItems ? JSON.parse(savedWishlistItems) : [];
     } catch (error) {
       console.error("Error loading wishlist from localStorage:", error);
@@ -32,6 +33,7 @@ export const WishlistProvider = ({ children }) => {
   // Save wishlist items to localStorage whenever they change
   useEffect(() => {
     try {
+      console.log("Saving wishlist to localStorage:", wishlistItems);
       localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
     } catch (error) {
       console.error("Error saving wishlist to localStorage:", error);
@@ -41,22 +43,38 @@ export const WishlistProvider = ({ children }) => {
 
   const addToWishlist = (item) => {
     try {
+      console.log("Adding item to wishlist:", item);
+      
       if (!item || !item.product_id) {
+        console.error("Invalid product data:", item);
         toast.error("Invalid product. Cannot add to wishlist.");
         return false;
       }
 
-      if (
-        !wishlistItems.find(
-          (wishlistItem) => wishlistItem.product_id === item.product_id
-        )
-      ) {
-        setWishlistItems((prevItems) => [...prevItems, item]);
-        toast.success(`${item.product_title} added to wishlist!`);
-        return true;
+      // Check if item already exists in wishlist
+      const existingItem = wishlistItems.find(
+        (wishlistItem) => wishlistItem.product_id === item.product_id
+      );
+      
+      if (existingItem) {
+        console.log("Item already exists in wishlist:", existingItem);
+        toast.info("This item is already in your wishlist!");
+        return false;
       }
-      toast.info("This item is already in your wishlist!");
-      return false;
+      
+      // Ensure the item has all required fields
+      const itemToAdd = {
+        product_id: item.product_id,
+        product_title: item.product_title,
+        product_image: item.product_image,
+        price: item.price,
+        category: item.category || "unknown"
+      };
+      
+      setWishlistItems((prevItems) => [...prevItems, itemToAdd]);
+      console.log("Item added to wishlist successfully:", itemToAdd);
+      toast.success(`${item.product_title} added to wishlist!`);
+      return true;
     } catch (error) {
       console.error("Error adding item to wishlist:", error);
       toast.error("Failed to add item to wishlist. Please try again.");
@@ -66,6 +84,7 @@ export const WishlistProvider = ({ children }) => {
 
   const removeFromWishlist = (productId) => {
     try {
+      console.log("Removing item from wishlist with ID:", productId);
       if (!productId) {
         toast.error("Invalid product ID. Cannot remove from wishlist.");
         return;
@@ -76,8 +95,10 @@ export const WishlistProvider = ({ children }) => {
         setWishlistItems((prevItems) =>
           prevItems.filter((item) => item.product_id !== productId)
         );
+        console.log("Item removed from wishlist:", itemToRemove);
         toast.info(`${itemToRemove.product_title} removed from wishlist.`);
       } else {
+        console.error("Item not found in wishlist with ID:", productId);
         toast.error("Item not found in wishlist.");
       }
     } catch (error) {
@@ -88,6 +109,7 @@ export const WishlistProvider = ({ children }) => {
 
   const moveToCart = (productId) => {
     try {
+      console.log("Moving item to cart with ID:", productId);
       if (!productId) {
         toast.error("Invalid product ID. Cannot move to cart.");
         return;
@@ -95,16 +117,31 @@ export const WishlistProvider = ({ children }) => {
 
       const item = wishlistItems.find(item => item.product_id === productId);
       if (item) {
-        const success = addToCart(item);
+        console.log("Found item in wishlist:", item);
+        
+        // Ensure the item has all required fields
+        const itemToAdd = {
+          product_id: item.product_id,
+          product_title: item.product_title,
+          product_image: item.product_image,
+          price: item.price,
+          category: item.category || "unknown"
+        };
+        
+        const success = addToCart(itemToAdd);
         if (success) {
           removeFromWishlist(productId);
+          console.log("Item moved to cart successfully");
           toast.success(`${item.product_title} moved to cart!`);
         } else {
           // If addToCart returns false, it means the cart total would exceed $1000
           // or the item is already in the cart. The toast error is already shown in the CartContext
+          console.log("Failed to add item to cart from wishlist");
         }
       } else {
+        console.error("Item not found in wishlist with ID:", productId);
         toast.error("Item not found in wishlist.");
+        console.log("Current wishlist items:", wishlistItems);
       }
     } catch (error) {
       console.error("Error moving item to cart:", error);
@@ -114,6 +151,7 @@ export const WishlistProvider = ({ children }) => {
 
   const clearWishlist = () => {
     try {
+      console.log("Clearing wishlist");
       setWishlistItems([]);
       toast.info("Wishlist has been cleared.");
     } catch (error) {

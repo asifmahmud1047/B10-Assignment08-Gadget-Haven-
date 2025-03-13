@@ -3,7 +3,7 @@
 Gadget Heaven is a modern e-commerce platform for gadget enthusiasts, offering a wide range of electronic devices and accessories. This project was built using React and implements various features to provide a seamless shopping experience.
 
 ## Live Website Link
-[Gadget Heaven Live Site](https://gadgetheaven.netlify.app)
+[Gadget Heaven Live Site](https://gadget-heaven-platform.netlify.app/)
 
 ## Features
 
@@ -47,19 +47,6 @@ Gadget Heaven is a modern e-commerce platform for gadget enthusiasts, offering a
 - Recharts (for statistics visualization)
 - CSS for styling
 
-## How to Run Locally
-
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Start the development server: `npm run dev`
-4. Open your browser and navigate to `http://localhost:5173`
-
-## Project Structure
-
-- `/src/components`: Reusable UI components
-- `/src/context`: Context providers for state management
-- `/src/pages`: Main application pages
-- `/public`: Static assets and data files
 
 ## Future Improvements
 

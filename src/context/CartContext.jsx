@@ -18,6 +18,7 @@ export const CartProvider = ({ children }) => {
     try {
       // Load cart items from localStorage on initial render
       const savedCartItems = localStorage.getItem("cartItems");
+      console.log("Loading cart from localStorage:", savedCartItems);
       return savedCartItems ? JSON.parse(savedCartItems) : [];
     } catch (error) {
       console.error("Error loading cart from localStorage:", error);
@@ -29,6 +30,7 @@ export const CartProvider = ({ children }) => {
   // Save cart items to localStorage whenever they change
   useEffect(() => {
     try {
+      console.log("Saving cart to localStorage:", cartItems);
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     } catch (error) {
       console.error("Error saving cart to localStorage:", error);
@@ -38,7 +40,10 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (item) => {
     try {
+      console.log("Adding item to cart:", item);
+      
       if (!item || !item.product_id) {
+        console.error("Invalid product data:", item);
         toast.error("Invalid product. Cannot add to cart.");
         return false;
       }
@@ -49,6 +54,7 @@ export const CartProvider = ({ children }) => {
       );
       
       if (existingItem) {
+        console.log("Item already exists in cart:", existingItem);
         toast.info(`${item.product_title} is already in your cart!`);
         return false;
       }
@@ -59,11 +65,22 @@ export const CartProvider = ({ children }) => {
       
       // Check if adding this item would exceed $1000
       if (currentTotal + itemPrice > 1000) {
+        console.log("Adding item would exceed $1000 limit. Current total:", currentTotal, "Item price:", itemPrice);
         toast.error("Cannot add item. Cart total would exceed $1000!");
         return false;
       }
       
-      setCartItems((prevItems) => [...prevItems, item]);
+      // Ensure the item has all required fields
+      const itemToAdd = {
+        product_id: item.product_id,
+        product_title: item.product_title,
+        product_image: item.product_image,
+        price: item.price,
+        category: item.category || "unknown"
+      };
+      
+      setCartItems((prevItems) => [...prevItems, itemToAdd]);
+      console.log("Item added to cart successfully:", itemToAdd);
       toast.success(`${item.product_title} added to cart!`);
       return true;
     } catch (error) {
@@ -75,6 +92,7 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = (productId) => {
     try {
+      console.log("Removing item from cart with ID:", productId);
       if (!productId) {
         toast.error("Invalid product ID. Cannot remove from cart.");
         return;
@@ -85,8 +103,10 @@ export const CartProvider = ({ children }) => {
         setCartItems((prevItems) =>
           prevItems.filter((item) => item.product_id !== productId)
         );
+        console.log("Item removed from cart:", itemToRemove);
         toast.info(`${itemToRemove.product_title} removed from cart.`);
       } else {
+        console.error("Item not found in cart with ID:", productId);
         toast.error("Item not found in cart.");
       }
     } catch (error) {
@@ -97,6 +117,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     try {
+      console.log("Clearing cart");
       setCartItems([]);
       toast.info("Cart has been cleared.");
     } catch (error) {
@@ -107,22 +128,31 @@ export const CartProvider = ({ children }) => {
 
   const totalPrice = () => {
     try {
-      return cartItems.reduce((total, item) => total + (parseFloat(item.price) || 0), 0).toFixed(2);
+      const total = cartItems.reduce((total, item) => total + (parseFloat(item.price) || 0), 0).toFixed(2);
+      console.log("Calculated total price:", total);
+      return total;
     } catch (error) {
       console.error("Error calculating total price:", error);
       return "0.00";
     }
   };
 
-  const sortCartByPrice = () => {
+  const sortCartByPrice = (direction = 'desc') => {
     try {
       if (cartItems.length <= 1) {
         toast.info("Need at least two items to sort.");
         return;
       }
       
-      setCartItems([...cartItems].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
-      toast.info("Cart items sorted by price (high to low).");
+      if (direction === 'asc') {
+        // Sort low to high
+        setCartItems([...cartItems].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)));
+        toast.info("Cart items sorted by price (low to high).");
+      } else {
+        // Sort high to low (default)
+        setCartItems([...cartItems].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
+        toast.info("Cart items sorted by price (high to low).");
+      }
     } catch (error) {
       console.error("Error sorting cart:", error);
       toast.error("Failed to sort cart. Please try again.");
