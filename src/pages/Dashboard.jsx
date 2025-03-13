@@ -288,7 +288,7 @@ function Dashboard() {
               <div className="purchase-section">
                 <button 
                   className="purchase-button" 
-                  disabled={cartItems.length === 0}
+                  disabled={!cartItems || cartItems.length === 0}
                   onClick={handlePurchase}
                 >
                   <FontAwesomeIcon icon={faCheck} /> Purchase

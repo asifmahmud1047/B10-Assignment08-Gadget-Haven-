@@ -150,8 +150,10 @@ function Details() {
         
         if (success) {
           console.log("Product successfully added to cart");
+          toast.success(`${product.product_title} added to cart!`);
         } else {
           console.log("Failed to add product to cart");
+          // Toast is already shown in the CartContext
         }
       } catch (error) {
         console.error("Error adding to cart:", error);
@@ -182,13 +184,17 @@ function Details() {
         if (success) {
           console.log("Product successfully added to wishlist");
           setInWishlist(true);
+          toast.success(`${product.product_title} added to wishlist!`);
         } else {
           console.log("Failed to add product to wishlist");
+          // Toast is already shown in the WishlistContext
         }
       } catch (error) {
         console.error("Error adding to wishlist:", error);
         toast.error("Failed to add item to wishlist. Please try again.");
       }
+    } else if (inWishlist) {
+      toast.info(`${product.product_title} is already in your wishlist!`);
     }
   };
 

@@ -15,23 +15,39 @@ export const useWishlist = () => {
 
 // Wishlist Provider Component
 export const WishlistProvider = ({ children }) => {
-  const [wishlistItems, setWishlistItems] = useState(() => {
-    try {
-      // Load wishlist items from localStorage on initial render
-      const savedWishlistItems = localStorage.getItem("wishlistItems");
-      console.log("Loading wishlist from localStorage:", savedWishlistItems);
-      return savedWishlistItems ? JSON.parse(savedWishlistItems) : [];
-    } catch (error) {
-      console.error("Error loading wishlist from localStorage:", error);
-      toast.error("Failed to load your wishlist. Starting with an empty wishlist.");
-      return [];
-    }
-  });
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [isInitialized, setIsInitialized] = useState(false);
   
   const { addToCart } = useCart();
 
+  // Load wishlist items from localStorage on initial render
+  useEffect(() => {
+    try {
+      const savedWishlistItems = localStorage.getItem("wishlistItems");
+      console.log("Loading wishlist from localStorage:", savedWishlistItems);
+      
+      if (savedWishlistItems) {
+        const parsedItems = JSON.parse(savedWishlistItems);
+        if (Array.isArray(parsedItems)) {
+          setWishlistItems(parsedItems);
+        } else {
+          console.error("Invalid wishlist data format in localStorage:", parsedItems);
+          setWishlistItems([]);
+        }
+      }
+    } catch (error) {
+      console.error("Error loading wishlist from localStorage:", error);
+      toast.error("Failed to load your wishlist. Starting with an empty wishlist.");
+      setWishlistItems([]);
+    } finally {
+      setIsInitialized(true);
+    }
+  }, []);
+
   // Save wishlist items to localStorage whenever they change
   useEffect(() => {
+    if (!isInitialized) return;
+    
     try {
       console.log("Saving wishlist to localStorage:", wishlistItems);
       localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
@@ -39,7 +55,7 @@ export const WishlistProvider = ({ children }) => {
       console.error("Error saving wishlist to localStorage:", error);
       toast.error("Failed to save your wishlist. Changes may not persist after refresh.");
     }
-  }, [wishlistItems]);
+  }, [wishlistItems, isInitialized]);
 
   const addToWishlist = (item) => {
     try {
@@ -51,9 +67,12 @@ export const WishlistProvider = ({ children }) => {
         return false;
       }
 
+      // Normalize product_id to number
+      const productId = typeof item.product_id === 'string' ? parseInt(item.product_id) : item.product_id;
+
       // Check if item already exists in wishlist
       const existingItem = wishlistItems.find(
-        (wishlistItem) => wishlistItem.product_id === item.product_id
+        (wishlistItem) => wishlistItem.product_id === productId
       );
       
       if (existingItem) {
@@ -64,10 +83,10 @@ export const WishlistProvider = ({ children }) => {
       
       // Ensure the item has all required fields
       const itemToAdd = {
-        product_id: item.product_id,
+        product_id: productId,
         product_title: item.product_title,
         product_image: item.product_image,
-        price: item.price,
+        price: typeof item.price === 'string' ? parseFloat(item.price) : item.price,
         category: item.category || "unknown"
       };
       
@@ -90,10 +109,12 @@ export const WishlistProvider = ({ children }) => {
         return;
       }
 
-      const itemToRemove = wishlistItems.find(item => item.product_id === productId);
+      const productIdNum = typeof productId === 'string' ? parseInt(productId) : productId;
+      const itemToRemove = wishlistItems.find(item => item.product_id === productIdNum);
+      
       if (itemToRemove) {
         setWishlistItems((prevItems) =>
-          prevItems.filter((item) => item.product_id !== productId)
+          prevItems.filter((item) => item.product_id !== productIdNum)
         );
         console.log("Item removed from wishlist:", itemToRemove);
         toast.info(`${itemToRemove.product_title} removed from wishlist.`);
@@ -115,7 +136,9 @@ export const WishlistProvider = ({ children }) => {
         return;
       }
 
-      const item = wishlistItems.find(item => item.product_id === productId);
+      const productIdNum = typeof productId === 'string' ? parseInt(productId) : productId;
+      const item = wishlistItems.find(item => item.product_id === productIdNum);
+      
       if (item) {
         console.log("Found item in wishlist:", item);
         
@@ -130,7 +153,7 @@ export const WishlistProvider = ({ children }) => {
         
         const success = addToCart(itemToAdd);
         if (success) {
-          removeFromWishlist(productId);
+          removeFromWishlist(productIdNum);
           console.log("Item moved to cart successfully");
           toast.success(`${item.product_title} moved to cart!`);
         } else {

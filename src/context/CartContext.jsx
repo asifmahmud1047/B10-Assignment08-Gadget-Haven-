@@ -14,21 +14,37 @@ export const useCart = () => {
 
 // Cart Provider Component
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(() => {
+  const [cartItems, setCartItems] = useState([]);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load cart items from localStorage on initial render
+  useEffect(() => {
     try {
-      // Load cart items from localStorage on initial render
       const savedCartItems = localStorage.getItem("cartItems");
       console.log("Loading cart from localStorage:", savedCartItems);
-      return savedCartItems ? JSON.parse(savedCartItems) : [];
+      
+      if (savedCartItems) {
+        const parsedItems = JSON.parse(savedCartItems);
+        if (Array.isArray(parsedItems)) {
+          setCartItems(parsedItems);
+        } else {
+          console.error("Invalid cart data format in localStorage:", parsedItems);
+          setCartItems([]);
+        }
+      }
     } catch (error) {
       console.error("Error loading cart from localStorage:", error);
       toast.error("Failed to load your cart. Starting with an empty cart.");
-      return [];
+      setCartItems([]);
+    } finally {
+      setIsInitialized(true);
     }
-  });
+  }, []);
 
   // Save cart items to localStorage whenever they change
   useEffect(() => {
+    if (!isInitialized) return;
+    
     try {
       console.log("Saving cart to localStorage:", cartItems);
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -36,7 +52,7 @@ export const CartProvider = ({ children }) => {
       console.error("Error saving cart to localStorage:", error);
       toast.error("Failed to save your cart. Changes may not persist after refresh.");
     }
-  }, [cartItems]);
+  }, [cartItems, isInitialized]);
 
   const addToCart = (item) => {
     try {
@@ -72,10 +88,10 @@ export const CartProvider = ({ children }) => {
       
       // Ensure the item has all required fields
       const itemToAdd = {
-        product_id: item.product_id,
+        product_id: typeof item.product_id === 'string' ? parseInt(item.product_id) : item.product_id,
         product_title: item.product_title,
         product_image: item.product_image,
-        price: item.price,
+        price: typeof item.price === 'string' ? parseFloat(item.price) : item.price,
         category: item.category || "unknown"
       };
       
@@ -98,10 +114,12 @@ export const CartProvider = ({ children }) => {
         return;
       }
 
-      const itemToRemove = cartItems.find(item => item.product_id === productId);
+      const productIdNum = typeof productId === 'string' ? parseInt(productId) : productId;
+      const itemToRemove = cartItems.find(item => item.product_id === productIdNum);
+      
       if (itemToRemove) {
         setCartItems((prevItems) =>
-          prevItems.filter((item) => item.product_id !== productId)
+          prevItems.filter((item) => item.product_id !== productIdNum)
         );
         console.log("Item removed from cart:", itemToRemove);
         toast.info(`${itemToRemove.product_title} removed from cart.`);
