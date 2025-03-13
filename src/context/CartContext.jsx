@@ -22,19 +22,35 @@ export const CartProvider = ({ children }) => {
     try {
       const savedCartItems = localStorage.getItem("cartItems");
       console.log("Loading cart from localStorage:", savedCartItems);
-      
+
       if (savedCartItems) {
         const parsedItems = JSON.parse(savedCartItems);
         if (Array.isArray(parsedItems)) {
-          setCartItems(parsedItems);
+          // Ensure all items have the correct structure
+          const validItems = parsedItems.filter(item => 
+            item && 
+            item.product_id && 
+            item.product_title && 
+            item.product_image && 
+            item.price !== undefined
+          );
+          
+          if (validItems.length !== parsedItems.length) {
+            console.warn(`Filtered out ${parsedItems.length - validItems.length} invalid cart items`);
+          }
+          
+          console.log("Valid cart items loaded:", validItems);
+          setCartItems(validItems);
         } else {
           console.error("Invalid cart data format in localStorage:", parsedItems);
+          localStorage.removeItem("cartItems");
           setCartItems([]);
         }
       }
     } catch (error) {
       console.error("Error loading cart from localStorage:", error);
       toast.error("Failed to load your cart. Starting with an empty cart.");
+      localStorage.removeItem("cartItems");
       setCartItems([]);
     } finally {
       setIsInitialized(true);
@@ -44,7 +60,7 @@ export const CartProvider = ({ children }) => {
   // Save cart items to localStorage whenever they change
   useEffect(() => {
     if (!isInitialized) return;
-    
+
     try {
       console.log("Saving cart to localStorage:", cartItems);
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -57,43 +73,55 @@ export const CartProvider = ({ children }) => {
   const addToCart = (item) => {
     try {
       console.log("Adding item to cart:", item);
-      
+
       if (!item || !item.product_id) {
         console.error("Invalid product data:", item);
         toast.error("Invalid product. Cannot add to cart.");
         return false;
       }
 
+      // Ensure product_id is a number
+      const productId = typeof item.product_id === 'string' 
+        ? parseInt(item.product_id) 
+        : item.product_id;
+
       // Check if item already exists in cart
       const existingItem = cartItems.find(
-        (cartItem) => cartItem.product_id === item.product_id
+        (cartItem) => cartItem.product_id === productId
       );
-      
+
       if (existingItem) {
         console.log("Item already exists in cart:", existingItem);
         toast.info(`${item.product_title} is already in your cart!`);
         return false;
       }
-      
+
       // Calculate current total price
-      const currentTotal = cartItems.reduce((total, item) => total + (parseFloat(item.price) || 0), 0);
+      const currentTotal = cartItems.reduce((total, item) => total + (parseFloat(item.price) || 0), 0);     
       const itemPrice = parseFloat(item.price) || 0;
-      
+
       // Check if adding this item would exceed $1000
       if (currentTotal + itemPrice > 1000) {
         console.log("Adding item would exceed $1000 limit. Current total:", currentTotal, "Item price:", itemPrice);
         toast.error("Cannot add item. Cart total would exceed $1000!");
         return false;
       }
-      
+
+      // Fix image path if needed
+      let productImage = item.product_image;
+      if (productImage && !productImage.startsWith('http') && !productImage.startsWith('/')) {
+        productImage = `/${productImage}`;
+      }
+
       const itemToAdd = {
-        product_id: typeof item.product_id === 'string' ? parseInt(item.product_id) : item.product_id,
+        product_id: productId,
         product_title: item.product_title,
-        product_image: item.product_image,
+        product_image: productImage,
         price: typeof item.price === 'string' ? parseFloat(item.price) : item.price,
         category: item.category || "unknown"
       };
-      
+
+      console.log("Formatted item to add to cart:", itemToAdd);
       setCartItems((prevItems) => [...prevItems, itemToAdd]);
       console.log("Item added to cart successfully:", itemToAdd);
       toast.success(`${item.product_title} added to cart!`);

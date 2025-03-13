@@ -90,12 +90,9 @@ function Dashboard() {
     }
   };
 
-  const handleImageError = (id) => {
-    console.log("Image error for product ID:", id);
-    setImageErrors(prev => ({
-      ...prev,
-      [id]: true
-    }));
+  const handleImageError = (productId) => {
+    console.error(`Error loading image for product ID: ${productId}`);
+    setImageErrors((prev) => ({ ...prev, [productId]: true }));
   };
 
   const handleRemoveFromCart = (productId) => {
@@ -173,9 +170,19 @@ function Dashboard() {
     return "item-card";
   };
 
+  // Get CSS class for category
+  const getCategoryClass = (category) => {
+    if (!category) return 'category-unknown';
+    const formattedCategory = category.replace(/\s+/g, '-').toLowerCase();
+    return `category-${formattedCategory}`;
+  };
+
   // Ensure image path is correct
   const getImagePath = (imagePath) => {
-    if (!imagePath) return null;
+    if (!imagePath) {
+      console.warn("Missing image path for product");
+      return null;
+    }
     
     // If the path already starts with http or https, return it as is
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
@@ -275,19 +282,21 @@ function Dashboard() {
                       className={getItemClassName(item.product_id)}
                       data-id={item.product_id}
                     >
-                      {imageErrors[item.product_id] ? (
-                        <div className="item-image placeholder-image">
-                          <FontAwesomeIcon icon={faImage} size="2x" />
-                          <p>{item.product_title || "Product"}</p>
-                        </div>
-                      ) : (
-                        <img 
-                          src={getImagePath(item.product_image)}
-                          alt={item.product_title || "Product"} 
-                          className="item-image"
-                          onError={() => handleImageError(item.product_id)}
-                        />
-                      )}
+                      <div className="item-image-container">
+                        {imageErrors[item.product_id] ? (
+                          <div className={`image-placeholder ${getCategoryClass(item.category)}`}>
+                            <FontAwesomeIcon icon={faImage} size="2x" />
+                            <p>{item.product_title}</p>
+                          </div>
+                        ) : (
+                          <img
+                            src={getImagePath(item.product_image)}
+                            alt={item.product_title}
+                            className="item-image"
+                            onError={() => handleImageError(item.product_id)}
+                          />
+                        )}
+                      </div>
                       <div className="item-details">
                         <h3>{item.product_title || "Unknown Product"}</h3>
                         <p className="item-price">{formatPrice(item.price || 0)}</p>
@@ -346,19 +355,21 @@ function Dashboard() {
                       className={getItemClassName(item.product_id)}
                       data-id={item.product_id}
                     >
-                      {imageErrors[item.product_id] ? (
-                        <div className="item-image placeholder-image">
-                          <FontAwesomeIcon icon={faImage} size="2x" />
-                          <p>{item.product_title || "Product"}</p>
-                        </div>
-                      ) : (
-                        <img 
-                          src={getImagePath(item.product_image)}
-                          alt={item.product_title || "Product"} 
-                          className="item-image"
-                          onError={() => handleImageError(item.product_id)}
-                        />
-                      )}
+                      <div className="item-image-container">
+                        {imageErrors[item.product_id] ? (
+                          <div className={`image-placeholder ${getCategoryClass(item.category)}`}>
+                            <FontAwesomeIcon icon={faImage} size="2x" />
+                            <p>{item.product_title}</p>
+                          </div>
+                        ) : (
+                          <img
+                            src={getImagePath(item.product_image)}
+                            alt={item.product_title}
+                            className="item-image"
+                            onError={() => handleImageError(item.product_id)}
+                          />
+                        )}
+                      </div>
                       <div className="item-details">
                         <h3>{item.product_title || "Unknown Product"}</h3>
                         <p className="item-price">{formatPrice(item.price || 0)}</p>

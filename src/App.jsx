@@ -16,7 +16,7 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import AdditionalPage from "./pages/AdditionalPage";
 import Stats from "./pages/Stats";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 
@@ -42,6 +42,7 @@ const testLocalStorage = () => {
       } catch (e) {
         console.error('Invalid cart items in localStorage, clearing:', e);
         localStorage.removeItem('cartItems');
+        toast.error('Invalid cart data detected. Your cart has been reset.');
       }
     }
     
@@ -51,10 +52,31 @@ const testLocalStorage = () => {
       } catch (e) {
         console.error('Invalid wishlist items in localStorage, clearing:', e);
         localStorage.removeItem('wishlistItems');
+        toast.error('Invalid wishlist data detected. Your wishlist has been reset.');
+      }
+    }
+    
+    // Check if the parsed items are arrays
+    if (cartItems) {
+      const parsedCart = JSON.parse(cartItems);
+      if (!Array.isArray(parsedCart)) {
+        console.error('Cart items in localStorage are not an array, clearing');
+        localStorage.removeItem('cartItems');
+        toast.error('Invalid cart data format. Your cart has been reset.');
+      }
+    }
+    
+    if (wishlistItems) {
+      const parsedWishlist = JSON.parse(wishlistItems);
+      if (!Array.isArray(parsedWishlist)) {
+        console.error('Wishlist items in localStorage are not an array, clearing');
+        localStorage.removeItem('wishlistItems');
+        toast.error('Invalid wishlist data format. Your wishlist has been reset.');
       }
     }
   } catch (e) {
     console.error('localStorage test failed:', e);
+    toast.error('There was an issue with browser storage. Some features may not work correctly.');
   }
 };
 

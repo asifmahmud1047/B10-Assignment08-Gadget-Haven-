@@ -25,19 +25,35 @@ export const WishlistProvider = ({ children }) => {
     try {
       const savedWishlistItems = localStorage.getItem("wishlistItems");
       console.log("Loading wishlist from localStorage:", savedWishlistItems);
-      
+
       if (savedWishlistItems) {
         const parsedItems = JSON.parse(savedWishlistItems);
         if (Array.isArray(parsedItems)) {
-          setWishlistItems(parsedItems);
+          // Ensure all items have the correct structure
+          const validItems = parsedItems.filter(item => 
+            item && 
+            item.product_id && 
+            item.product_title && 
+            item.product_image && 
+            item.price !== undefined
+          );
+          
+          if (validItems.length !== parsedItems.length) {
+            console.warn(`Filtered out ${parsedItems.length - validItems.length} invalid wishlist items`);
+          }
+          
+          console.log("Valid wishlist items loaded:", validItems);
+          setWishlistItems(validItems);
         } else {
           console.error("Invalid wishlist data format in localStorage:", parsedItems);
+          localStorage.removeItem("wishlistItems");
           setWishlistItems([]);
         }
       }
     } catch (error) {
       console.error("Error loading wishlist from localStorage:", error);
       toast.error("Failed to load your wishlist. Starting with an empty wishlist.");
+      localStorage.removeItem("wishlistItems");
       setWishlistItems([]);
     } finally {
       setIsInitialized(true);
@@ -67,8 +83,10 @@ export const WishlistProvider = ({ children }) => {
         return false;
       }
 
-      // Normalize product_id to number
-      const productId = typeof item.product_id === 'string' ? parseInt(item.product_id) : item.product_id;
+      // Ensure product_id is a number
+      const productId = typeof item.product_id === 'string' 
+        ? parseInt(item.product_id) 
+        : item.product_id;
 
       // Check if item already exists in wishlist
       const existingItem = wishlistItems.find(
@@ -77,19 +95,25 @@ export const WishlistProvider = ({ children }) => {
       
       if (existingItem) {
         console.log("Item already exists in wishlist:", existingItem);
-        toast.info("This item is already in your wishlist!");
+        toast.info(`${item.product_title} is already in your wishlist!`);
         return false;
       }
       
-      // Ensure the item has all required fields
+      // Fix image path if needed
+      let productImage = item.product_image;
+      if (productImage && !productImage.startsWith('http') && !productImage.startsWith('/')) {
+        productImage = `/${productImage}`;
+      }
+
       const itemToAdd = {
         product_id: productId,
         product_title: item.product_title,
-        product_image: item.product_image,
+        product_image: productImage,
         price: typeof item.price === 'string' ? parseFloat(item.price) : item.price,
         category: item.category || "unknown"
       };
-      
+
+      console.log("Formatted item to add to wishlist:", itemToAdd);
       setWishlistItems((prevItems) => [...prevItems, itemToAdd]);
       console.log("Item added to wishlist successfully:", itemToAdd);
       toast.success(`${item.product_title} added to wishlist!`);

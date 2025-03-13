@@ -578,3 +578,64 @@
   font-size: 1.2rem;
   color: #6c757d;
 }
+
+/* Image placeholder styles */
+.image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 150px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.image-placeholder p {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Category-specific placeholder colors */
+.category-electronics {
+  background-color: #e3f2fd;
+}
+
+.category-clothing {
+  background-color: #f3e5f5;
+}
+
+.category-home-and-kitchen {
+  background-color: #e8f5e9;
+}
+
+.category-books {
+  background-color: #fff3e0;
+}
+
+.category-toys {
+  background-color: #f1f8e9;
+}
+
+.category-beauty {
+  background-color: #fce4ec;
+}
+
+.category-sports {
+  background-color: #e0f7fa;
+}
+
+.category-automotive {
+  background-color: #ede7f6;
+}
+
+.category-unknown {
+  background-color: #f5f5f5;
+}
