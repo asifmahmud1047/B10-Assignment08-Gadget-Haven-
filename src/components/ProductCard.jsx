@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faImage } from "@fortawesome/free-solid-svg-icons";
-import ReactStars from "react-rating-stars-component";
+import StarRating from "./StarRating";
 import PropTypes from "prop-types";
 import "./ProductCard.css";
 
@@ -92,6 +92,23 @@ const ProductCard = ({ product }) => {
     return `category-${formattedCategory}`;
   };
 
+  // Ensure image path is correct
+  const getImagePath = (imagePath) => {
+    if (!imagePath) return null;
+    
+    // If the path already starts with http or https, return it as is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
+    // If the path doesn't start with a slash, add one
+    if (!imagePath.startsWith('/')) {
+      return `/${imagePath}`;
+    }
+    
+    return imagePath;
+  };
+
   // Format price with commas for thousands
   const formatPrice = (price) => {
     return price.toLocaleString('en-US', {
@@ -129,7 +146,7 @@ const ProductCard = ({ product }) => {
           <>
             {isImageVisible && (
               <img
-                src={product.product_image}
+                src={getImagePath(product.product_image)}
                 alt={product.product_title}
                 className="product-image"
                 onError={() => setImageError(true)}
@@ -164,7 +181,7 @@ const ProductCard = ({ product }) => {
         <h3 className="product-title">{getTruncatedTitle(product.product_title)}</h3>
         
         <div className="product-rating">
-          <ReactStars
+          <StarRating
             count={5}
             value={product.rating}
             size={isTablet ? 20 : isLaptop ? 24 : 18}

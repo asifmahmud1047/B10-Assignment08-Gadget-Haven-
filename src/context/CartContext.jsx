@@ -86,7 +86,6 @@ export const CartProvider = ({ children }) => {
         return false;
       }
       
-      // Ensure the item has all required fields
       const itemToAdd = {
         product_id: typeof item.product_id === 'string' ? parseInt(item.product_id) : item.product_id,
         product_title: item.product_title,

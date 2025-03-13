@@ -5,7 +5,7 @@ import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faHeart, faInfoCircle, faImage, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import ReactStars from "react-rating-stars-component";
+import StarRating from "../components/StarRating";
 import { toast } from "react-toastify";
 import "./Details.css";
 
@@ -131,6 +131,23 @@ function Details() {
     return description;
   };
 
+  // Ensure image path is correct
+  const getImagePath = (imagePath) => {
+    if (!imagePath) return null;
+    
+    // If the path already starts with http or https, return it as is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
+    // If the path doesn't start with a slash, add one
+    if (!imagePath.startsWith('/')) {
+      return `/${imagePath}`;
+    }
+    
+    return imagePath;
+  };
+
   const handleAddToCart = () => {
     if (product) {
       try {
@@ -239,7 +256,7 @@ function Details() {
           ) : (
             <>
               <img
-                src={product.product_image}
+                src={getImagePath(product.product_image)}
                 alt={product.product_title}
                 className="product-image"
                 onError={() => setImageError(true)}
@@ -268,7 +285,7 @@ function Details() {
           </h1>
           
           <div className="product-rating">
-            <ReactStars
+            <StarRating
               count={5}
               value={product.rating}
               size={isTablet ? 22 : 24}

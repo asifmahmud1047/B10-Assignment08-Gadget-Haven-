@@ -173,6 +173,23 @@ function Dashboard() {
     return "item-card";
   };
 
+  // Ensure image path is correct
+  const getImagePath = (imagePath) => {
+    if (!imagePath) return null;
+    
+    // If the path already starts with http or https, return it as is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
+    // If the path doesn't start with a slash, add one
+    if (!imagePath.startsWith('/')) {
+      return `/${imagePath}`;
+    }
+    
+    return imagePath;
+  };
+
   if (isLoading) {
     return (
       <div className="dashboard loading-state">
@@ -261,10 +278,11 @@ function Dashboard() {
                       {imageErrors[item.product_id] ? (
                         <div className="item-image placeholder-image">
                           <FontAwesomeIcon icon={faImage} size="2x" />
+                          <p>{item.product_title || "Product"}</p>
                         </div>
                       ) : (
                         <img 
-                          src={item.product_image} 
+                          src={getImagePath(item.product_image)}
                           alt={item.product_title || "Product"} 
                           className="item-image"
                           onError={() => handleImageError(item.product_id)}
@@ -331,10 +349,11 @@ function Dashboard() {
                       {imageErrors[item.product_id] ? (
                         <div className="item-image placeholder-image">
                           <FontAwesomeIcon icon={faImage} size="2x" />
+                          <p>{item.product_title || "Product"}</p>
                         </div>
                       ) : (
                         <img 
-                          src={item.product_image} 
+                          src={getImagePath(item.product_image)}
                           alt={item.product_title || "Product"} 
                           className="item-image"
                           onError={() => handleImageError(item.product_id)}

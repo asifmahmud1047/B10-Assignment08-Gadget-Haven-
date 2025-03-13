@@ -18,9 +18,52 @@ import AdditionalPage from "./pages/AdditionalPage";
 import Stats from "./pages/Stats";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+
+// Test localStorage functionality
+const testLocalStorage = () => {
+  try {
+    // Test if localStorage is available
+    localStorage.setItem('test', 'test');
+    localStorage.removeItem('test');
+    console.log('localStorage is working correctly');
+    
+    // Log existing cart and wishlist items
+    const cartItems = localStorage.getItem('cartItems');
+    const wishlistItems = localStorage.getItem('wishlistItems');
+    
+    console.log('Existing cart items in localStorage:', cartItems);
+    console.log('Existing wishlist items in localStorage:', wishlistItems);
+    
+    // If items exist but are not valid JSON, clear them
+    if (cartItems) {
+      try {
+        JSON.parse(cartItems);
+      } catch (e) {
+        console.error('Invalid cart items in localStorage, clearing:', e);
+        localStorage.removeItem('cartItems');
+      }
+    }
+    
+    if (wishlistItems) {
+      try {
+        JSON.parse(wishlistItems);
+      } catch (e) {
+        console.error('Invalid wishlist items in localStorage, clearing:', e);
+        localStorage.removeItem('wishlistItems');
+      }
+    }
+  } catch (e) {
+    console.error('localStorage test failed:', e);
+  }
+};
 
 const AppContent = () => {
   const location = useLocation();
+  
+  useEffect(() => {
+    testLocalStorage();
+  }, []);
   
   return (
     <div className={location.pathname === "/" ? "home-background" : "default-background"}>
