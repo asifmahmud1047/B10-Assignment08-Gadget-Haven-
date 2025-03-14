@@ -16,7 +16,6 @@ function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch products data
     fetch("/products.json")
       .then((response) => {
         if (!response.ok) {
@@ -38,7 +37,6 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    // Filter products based on selected category
     if (selectedCategory === "all") {
       setFilteredProducts(products);
     } else {
@@ -48,7 +46,6 @@ function Home() {
       console.log(`Filtered products for category "${selectedCategory}":`, filtered.length);
       setFilteredProducts(filtered);
     }
-    // Reset visible products count when category changes
     setVisibleProducts(6);
   }, [selectedCategory, products]);
 

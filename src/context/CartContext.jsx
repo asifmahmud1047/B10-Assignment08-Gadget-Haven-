@@ -1,13 +1,10 @@
-// src/context/CartContext.jsx
 import { createContext, useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PropTypes from "prop-types";
 
-// Create Cart Context
 const CartContext = createContext();
 
-// Custom Hook for using Cart Context
 export const useCart = () => {
   return useContext(CartContext);
 };
@@ -17,7 +14,6 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load cart items from localStorage on initial render
   useEffect(() => {
     try {
       const savedCartItems = localStorage.getItem("cartItems");
@@ -26,7 +22,6 @@ export const CartProvider = ({ children }) => {
       if (savedCartItems) {
         const parsedItems = JSON.parse(savedCartItems);
         if (Array.isArray(parsedItems)) {
-          // Ensure all items have the correct structure
           const validItems = parsedItems.filter(item => 
             item && 
             item.product_id && 
@@ -57,7 +52,6 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // Save cart items to localStorage whenever they change
   useEffect(() => {
     if (!isInitialized) return;
 
@@ -80,12 +74,11 @@ export const CartProvider = ({ children }) => {
         return false;
       }
 
-      // Ensure product_id is a number
+
       const productId = typeof item.product_id === 'string' 
         ? parseInt(item.product_id) 
         : item.product_id;
 
-      // Check if item already exists in cart
       const existingItem = cartItems.find(
         (cartItem) => cartItem.product_id === productId
       );
@@ -100,18 +93,18 @@ export const CartProvider = ({ children }) => {
       const currentTotal = cartItems.reduce((total, item) => total + (parseFloat(item.price) || 0), 0);     
       const itemPrice = parseFloat(item.price) || 0;
 
-      // Check if adding this item would exceed $1000
+      // Check if adding this item exceed $1000
       if (currentTotal + itemPrice > 1000) {
         console.log("Adding item would exceed $1000 limit. Current total:", currentTotal, "Item price:", itemPrice);
         toast.error("Cannot add item. Cart total would exceed $1000!");
         return false;
       }
 
-      // Fix image path if needed
-      let productImage = item.product_image;
-      if (productImage && !productImage.startsWith('http') && !productImage.startsWith('/')) {
-        productImage = `/${productImage}`;
-      }
+      // // Fix image path if needed
+      // let productImage = item.product_image;
+      // if (productImage && !productImage.startsWith('http') && !productImage.startsWith('/')) {
+      //   productImage = `/${productImage}`;
+      // }
 
       const itemToAdd = {
         product_id: productId,

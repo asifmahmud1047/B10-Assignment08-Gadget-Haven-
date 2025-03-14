@@ -17,7 +17,6 @@ const Sidebar = ({ onCategorySelect, selectedCategory }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch products to extract categories
     fetch("/products.json")
       .then((response) => {
         if (!response.ok) {
@@ -26,7 +25,6 @@ const Sidebar = ({ onCategorySelect, selectedCategory }) => {
         return response.json();
       })
       .then((data) => {
-        // Extract unique categories
         const uniqueCategories = [...new Set(data.map((item) => item.category))];
         console.log("Extracted categories:", uniqueCategories);
         setCategories(uniqueCategories);
@@ -39,7 +37,7 @@ const Sidebar = ({ onCategorySelect, selectedCategory }) => {
       });
   }, []);
 
-  // Map category names to icons
+
   const getCategoryIcon = (category) => {
     switch (category) {
       case "computers":

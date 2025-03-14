@@ -1,4 +1,3 @@
-// App.jsx
 import {
   BrowserRouter as Router,
   Route,
@@ -20,22 +19,18 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 
-// Test localStorage functionality
 const testLocalStorage = () => {
   try {
-    // Test if localStorage is available
     localStorage.setItem('test', 'test');
     localStorage.removeItem('test');
     console.log('localStorage is working correctly');
     
-    // Log existing cart and wishlist items
     const cartItems = localStorage.getItem('cartItems');
     const wishlistItems = localStorage.getItem('wishlistItems');
     
     console.log('Existing cart items in localStorage:', cartItems);
     console.log('Existing wishlist items in localStorage:', wishlistItems);
     
-    // If items exist but are not valid JSON, clear them
     if (cartItems) {
       try {
         JSON.parse(cartItems);
@@ -56,7 +51,6 @@ const testLocalStorage = () => {
       }
     }
     
-    // Check if the parsed items are arrays
     if (cartItems) {
       const parsedCart = JSON.parse(cartItems);
       if (!Array.isArray(parsedCart)) {

@@ -1,5 +1,5 @@
 .home-container {
-  min-height: calc(100vh - 64px - 200px); /* Adjust based on navbar and footer height */
+  min-height: calc(100vh - 64px - 200px); 
 }
 
 .content-container {
@@ -31,7 +31,7 @@
   border-bottom: 2px solid #f0f0f0;
 }
 
-/* Improved grid layout for all screens */
+
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -40,11 +40,10 @@
   width: 100%;
 }
 
-/* Optimize for desktop/laptop screens */
 @media (min-width: 992px) {
   .products-grid {
-    grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns for better readability */
-    gap: 2.5rem; /* Increased gap for better spacing */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem; 
     margin: 0 auto 2rem auto;
   }
   
@@ -54,12 +53,12 @@
   }
 }
 
-/* Optimize specifically for tablet screens */
+
 @media (min-width: 768px) and (max-width: 991px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr); /* Force exactly 2 columns on tablets */
-    gap: 1.5rem; /* Increased gap for better spacing */
-    margin: 0 auto 2rem auto; /* Center the grid */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1.5rem; 
+    margin: 0 auto 2rem auto; 
   }
   
   .category-title {
@@ -68,12 +67,12 @@
   }
 }
 
-/* For large desktop screens */
+
 @media (min-width: 1400px) {
   .products-grid {
-    grid-template-columns: repeat(3, 1fr); /* Keep 3 columns for consistency */
+    grid-template-columns: repeat(3, 1fr); 
     max-width: 1400px;
-    gap: 3rem; /* Even more spacing for large screens */
+    gap: 3rem; 
   }
 }
 
@@ -182,7 +181,6 @@
   transform: translateY(3px);
 }
 
-/* Remove duplicate styles that aren't needed */
 .banner {
   background-color: #eee;
   padding: 2rem;
@@ -203,13 +201,11 @@
   cursor: pointer;
 }
 
-/* Product card container specific styles */
 .product-card-container {
   display: grid;
   width: 100%;
 }
 
-/* Ensure consistent height for product cards */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-card-container > div {
     height: 100%;

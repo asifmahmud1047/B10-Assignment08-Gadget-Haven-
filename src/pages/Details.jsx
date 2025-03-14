@@ -20,28 +20,27 @@ function Details() {
   const { addToCart } = useCart();
   const { addToWishlist, wishlistItems } = useWishlist();
 
-  // Check if device is tablet
+ 
   useEffect(() => {
     const checkTablet = () => {
       const width = window.innerWidth;
       setIsTablet(width >= 768 && width <= 991);
     };
     
-    // Initial check
+
     checkTablet();
     
-    // Add event listener for window resize
+
     window.addEventListener('resize', checkTablet);
     
-    // Cleanup
+
     return () => window.removeEventListener('resize', checkTablet);
   }, []);
 
   useEffect(() => {
-    // Scroll to top when component mounts
+
     window.scrollTo(0, 0);
     
-    // Fetch product data
     fetch("/products.json")
       .then((response) => response.json())
       .then((data) => {
@@ -63,10 +62,10 @@ function Details() {
       });
   }, [id, wishlistItems]);
 
-  // Preload image to check if it exists
+
   useEffect(() => {
     if (product && product.product_image) {
-      // Set a small timeout to prioritize page layout before loading image
+     
       const timeoutId = setTimeout(() => {
         const img = new Image();
         img.src = product.product_image;
@@ -83,13 +82,13 @@ function Details() {
         };
       }, 100);
 
-      // Set a timeout to show placeholder if image takes too long to load
+    
       const loadTimeoutId = setTimeout(() => {
         if (!imageLoaded && !imageError) {
           console.warn(`Image loading timeout for product: ${product.product_title}`);
           setImageError(true);
         }
-      }, 3000); // 3 seconds timeout (reduced from 5)
+      }, 3000); 
 
       return () => {
         clearTimeout(timeoutId);
@@ -103,7 +102,7 @@ function Details() {
     return `category-${formattedCategory}`;
   };
 
-  // Format price with commas for thousands
+ 
   const formatPrice = (price) => {
     return price.toLocaleString('en-US', {
       style: 'currency',
@@ -112,10 +111,10 @@ function Details() {
     });
   };
 
-  // Format specifications for tablet view
+ 
   const getFormattedSpecs = (specs) => {
     if (isTablet) {
-      // For tablet, limit to 3 specs max and truncate if too long
+    
       return specs.slice(0, 3).map(spec => 
         spec.length > 60 ? spec.substring(0, 60) + '...' : spec
       );
@@ -123,7 +122,7 @@ function Details() {
     return specs;
   };
 
-  // Format description for tablet view
+
   const getFormattedDescription = (description) => {
     if (isTablet && description.length > 150) {
       return description.substring(0, 150) + '...';
@@ -131,16 +130,14 @@ function Details() {
     return description;
   };
 
-  // Ensure image path is correct
+
   const getImagePath = (imagePath) => {
     if (!imagePath) return null;
     
-    // If the path already starts with http or https, return it as is
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
     
-    // If the path doesn't start with a slash, add one
     if (!imagePath.startsWith('/')) {
       return `/${imagePath}`;
     }
@@ -153,7 +150,6 @@ function Details() {
       try {
         console.log("Adding product to cart from Details page:", product);
         
-        // Make sure the product has all required fields
         const productToAdd = {
           product_id: parseInt(product.product_id),
           product_title: product.product_title,
@@ -170,7 +166,6 @@ function Details() {
           toast.success(`${product.product_title} added to cart!`);
         } else {
           console.log("Failed to add product to cart");
-          // Toast is already shown in the CartContext
         }
       } catch (error) {
         console.error("Error adding to cart:", error);
@@ -186,7 +181,6 @@ function Details() {
       try {
         console.log("Adding product to wishlist from Details page:", product);
         
-        // Make sure the product has all required fields
         const productToAdd = {
           product_id: parseInt(product.product_id),
           product_title: product.product_title,
@@ -204,7 +198,6 @@ function Details() {
           toast.success(`${product.product_title} added to wishlist!`);
         } else {
           console.log("Failed to add product to wishlist");
-          // Toast is already shown in the WishlistContext
         }
       } catch (error) {
         console.error("Error adding to wishlist:", error);

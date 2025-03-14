@@ -25,7 +25,6 @@ const Stats = () => {
   const [activeChart, setActiveChart] = useState("bar");
 
   useEffect(() => {
-    // Fetch products data
     fetch("/products.json")
       .then((response) => {
         if (!response.ok) {
@@ -36,7 +35,6 @@ const Stats = () => {
       .then((data) => {
         console.log("Fetched products:", data.length);
         
-        // Process data for bar chart - group by rating
         const ratingGroups = {};
         data.forEach(product => {
           const rating = product.rating.toFixed(1);
@@ -52,7 +50,6 @@ const Stats = () => {
           ratingGroups[rating].totalPrice += product.price;
         });
         
-        // Calculate average price for each rating group
         const barData = Object.values(ratingGroups).map(group => ({
           rating: group.rating,
           avgPrice: group.totalPrice / group.count,
@@ -63,7 +60,6 @@ const Stats = () => {
         barData.sort((a, b) => a.rating - b.rating);
         setBarChartData(barData);
         
-        // Format data for scatter chart
         const scatterChartData = data.map((product) => ({
           x: product.price,
           y: product.rating,
@@ -82,7 +78,6 @@ const Stats = () => {
       });
   }, []);
 
-  // Custom tooltip for bar chart
   const BarChartTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -97,7 +92,7 @@ const Stats = () => {
     return null;
   };
 
-  // Custom tooltip for scatter chart
+
   const ScatterChartTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -113,7 +108,7 @@ const Stats = () => {
     return null;
   };
 
-  // Add PropTypes for tooltips
+
   BarChartTooltip.propTypes = {
     active: PropTypes.bool,
     payload: PropTypes.arrayOf(

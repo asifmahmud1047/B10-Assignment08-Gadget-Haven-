@@ -13,7 +13,6 @@ const ProductCard = ({ product }) => {
   const [isLaptop, setIsLaptop] = useState(false);
   const [isImageVisible, setIsImageVisible] = useState(false);
 
-  // Check device type
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth;
@@ -21,17 +20,13 @@ const ProductCard = ({ product }) => {
       setIsLaptop(width >= 992 && width <= 1399);
     };
     
-    // Initial check
     checkDeviceType();
     
-    // Add event listener for window resize
     window.addEventListener('resize', checkDeviceType);
     
-    // Cleanup
     return () => window.removeEventListener('resize', checkDeviceType);
   }, []);
 
-  // Use Intersection Observer to load images only when they come into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -55,7 +50,7 @@ const ProductCard = ({ product }) => {
     };
   }, [product.product_id]);
 
-  // Preload image to check if it exists
+  
   useEffect(() => {
     if (!isImageVisible) return;
 
@@ -73,35 +68,33 @@ const ProductCard = ({ product }) => {
       setImageError(true);
     };
 
-    // Set a timeout to show placeholder if image takes too long to load
+    
     const timeoutId = setTimeout(() => {
       if (!imageLoaded && !imageError) {
         console.warn(`Image loading timeout for product: ${product.product_title}`);
         setImageError(true);
       }
-    }, 3000); // 3 seconds timeout
+    }, 3000); 
 
     return () => {
       clearTimeout(timeoutId);
     };
   }, [product.product_image, product.product_id, product.product_title, imageLoaded, isImageVisible]);
 
-  // Get CSS class for category
   const getCategoryClass = (category) => {
     const formattedCategory = category.replace(/\s+/g, '-').toLowerCase();
     return `category-${formattedCategory}`;
   };
 
-  // Ensure image path is correct
   const getImagePath = (imagePath) => {
     if (!imagePath) return null;
     
-    // If the path already starts with http or https, return it as is
+
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
     
-    // If the path doesn't start with a slash, add one
+    
     if (!imagePath.startsWith('/')) {
       return `/${imagePath}`;
     }
@@ -109,7 +102,7 @@ const ProductCard = ({ product }) => {
     return imagePath;
   };
 
-  // Format price with commas for thousands
+  
   const formatPrice = (price) => {
     return price.toLocaleString('en-US', {
       style: 'currency',
@@ -118,7 +111,7 @@ const ProductCard = ({ product }) => {
     });
   };
 
-  // Truncate title based on device type
+  
   const getTruncatedTitle = (title) => {
     if (isTablet && title.length > 40) {
       return title.substring(0, 40) + '...';
@@ -147,8 +140,8 @@ const ProductCard = ({ product }) => {
             {isImageVisible && (
               <img
                 src={getImagePath(product.product_image)}
-                alt={product.product_title}
-                className="product-image"
+        alt={product.product_title}
+        className="product-image"
                 onError={() => setImageError(true)}
                 onLoad={() => setImageLoaded(true)}
                 loading="lazy"
@@ -193,10 +186,10 @@ const ProductCard = ({ product }) => {
         
         <p className="product-price">{formatPrice(product.price)}</p>
         
-        <Link to={`/details/${product.product_id}`} className="details-button">
+      <Link to={`/details/${product.product_id}`} className="details-button">
           <FontAwesomeIcon icon={faInfoCircle} size={isTablet || isLaptop ? "1x" : "sm"} /> 
           {isTablet ? "View Details" : isLaptop ? "View Details" : "View Details"}
-        </Link>
+      </Link>
       </div>
     </div>
   );

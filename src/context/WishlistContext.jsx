@@ -1,26 +1,22 @@
-// src/context/WishlistContext.jsx
 import { createContext, useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCart } from "./CartContext";
 import PropTypes from "prop-types";
 
-// Create Wishlist Context
 const WishlistContext = createContext();
 
-// Custom Hook for using Wishlist Context
 export const useWishlist = () => {
   return useContext(WishlistContext);
 };
 
-// Wishlist Provider Component
+// Wishlist Provider 
 export const WishlistProvider = ({ children }) => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
   
   const { addToCart } = useCart();
 
-  // Load wishlist items from localStorage on initial render
   useEffect(() => {
     try {
       const savedWishlistItems = localStorage.getItem("wishlistItems");
@@ -29,7 +25,6 @@ export const WishlistProvider = ({ children }) => {
       if (savedWishlistItems) {
         const parsedItems = JSON.parse(savedWishlistItems);
         if (Array.isArray(parsedItems)) {
-          // Ensure all items have the correct structure
           const validItems = parsedItems.filter(item => 
             item && 
             item.product_id && 
@@ -60,7 +55,7 @@ export const WishlistProvider = ({ children }) => {
     }
   }, []);
 
-  // Save wishlist items to localStorage whenever they change
+
   useEffect(() => {
     if (!isInitialized) return;
     
@@ -83,12 +78,11 @@ export const WishlistProvider = ({ children }) => {
         return false;
       }
 
-      // Ensure product_id is a number
+
       const productId = typeof item.product_id === 'string' 
         ? parseInt(item.product_id) 
         : item.product_id;
 
-      // Check if item already exists in wishlist
       const existingItem = wishlistItems.find(
         (wishlistItem) => wishlistItem.product_id === productId
       );
@@ -98,8 +92,7 @@ export const WishlistProvider = ({ children }) => {
         toast.info(`${item.product_title} is already in your wishlist!`);
         return false;
       }
-      
-      // Fix image path if needed
+
       let productImage = item.product_image;
       if (productImage && !productImage.startsWith('http') && !productImage.startsWith('/')) {
         productImage = `/${productImage}`;
@@ -166,7 +159,6 @@ export const WishlistProvider = ({ children }) => {
       if (item) {
         console.log("Found item in wishlist:", item);
         
-        // Ensure the item has all required fields
         const itemToAdd = {
           product_id: item.product_id,
           product_title: item.product_title,
@@ -181,8 +173,7 @@ export const WishlistProvider = ({ children }) => {
           console.log("Item moved to cart successfully");
           toast.success(`${item.product_title} moved to cart!`);
         } else {
-          // If addToCart returns false, it means the cart total would exceed $1000
-          // or the item is already in the cart. The toast error is already shown in the CartContext
+          
           console.log("Failed to add item to cart from wishlist");
         }
       } else {

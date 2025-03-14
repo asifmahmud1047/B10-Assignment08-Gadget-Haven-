@@ -476,7 +476,7 @@
   }
 }
 
-/* Confirmation Dialog */
+
 .confirmation-dialog {
   position: fixed;
   top: 0;
@@ -560,7 +560,6 @@
   background-color: #c82333;
 }
 
-/* Loading state */
 .loading-state {
   min-height: 60vh;
   display: flex;
@@ -579,7 +578,7 @@
   color: #6c757d;
 }
 
-/* Image placeholder styles */
+
 .image-placeholder {
   display: flex;
   flex-direction: column;
@@ -603,7 +602,7 @@
   white-space: nowrap;
 }
 
-/* Category-specific placeholder colors */
+
 .category-electronics {
   background-color: #e3f2fd;
 }

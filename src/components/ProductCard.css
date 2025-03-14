@@ -1,4 +1,3 @@
-/* ProductCard.css */
 .product-card {
   background-color: #ffffff;
   border-radius: 8px;
@@ -18,24 +17,23 @@
 
 .product-image-container {
   position: relative;
-  padding-top: 75%; /* 4:3 aspect ratio */
+  padding-top: 75%; 
   overflow: hidden;
   background-color: #f8f9fa;
   border-bottom: 1px solid #f0f0f0;
 }
 
-/* Optimize for tablet screens */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-image-container {
-    padding-top: 65%; /* Adjusted height for tablets to show images better */
+    padding-top: 65%; 
     border-bottom: 1px solid #f0f0f0;
   }
 }
 
-/* Optimize for laptop/desktop screens */
+
 @media (min-width: 992px) {
   .product-image-container {
-    padding-top: 65%; /* Adjusted height ratio for laptops */
+    padding-top: 65%; 
     border-bottom: 1px solid #f0f0f0;
   }
 }
@@ -46,24 +44,22 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Keep contain to prevent distortion */
+  object-fit: contain; 
   object-position: center;
   transition: transform 0.3s;
-  padding: 15px; /* Padding to prevent images from touching edges */
+  padding: 15px; 
 }
 
-/* Adjust padding for tablet screens */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-image {
-    padding: 10px; /* Adjusted padding on tablets */
+    padding: 10px; 
     object-fit: contain;
   }
 }
 
-/* Adjust padding for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-image {
-    padding: 20px; /* Increased padding on laptop screens for better appearance */
+    padding: 20px; 
     object-fit: contain;
   }
 }
@@ -95,7 +91,6 @@
   color: #333;
 }
 
-/* Optimize font size for tablet screens */
 @media (min-width: 768px) and (max-width: 991px) {
   .image-placeholder p {
     font-size: 1.1rem;
@@ -103,7 +98,6 @@
   }
 }
 
-/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .image-placeholder p {
     font-size: 1.2rem;
@@ -148,17 +142,16 @@
   flex-direction: column;
 }
 
-/* Optimize padding for tablet screens */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-info {
-    padding: 1rem 1.25rem; /* Adjusted padding for tablets */
+    padding: 1rem 1.25rem; 
   }
 }
 
-/* Optimize for laptop/desktop screens */
+
 @media (min-width: 992px) {
   .product-info {
-    padding: 1.5rem; /* Increased padding for better spacing */
+    padding: 1.5rem; 
   }
 }
 
@@ -173,36 +166,34 @@
   color: #333;
   margin-bottom: 0.5rem;
   line-height: 1.4;
-  /* Limit to 2 lines with ellipsis */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 2.8em; /* Fixed height for title to maintain consistent card heights */
+  height: 2.8em; 
 }
 
-/* Optimize for tablet screens */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-title {
-    font-size: 1.2rem; /* Increased font size for better readability on tablets */
+    font-size: 1.2rem; 
     line-height: 1.3;
     height: 2.6em;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #222; /* Darker text for better contrast */
+    color: #222; 
   }
 }
 
-/* Optimize for laptop/desktop screens */
+
 @media (min-width: 992px) {
   .product-title {
-    font-size: 1.4rem; /* Larger font size for laptop screens */
+    font-size: 1.4rem; 
     line-height: 1.4;
     height: 2.8em;
     margin-bottom: 0.75rem;
     font-weight: 600;
-    color: #222; /* Darker text for better contrast */
+    color: #222; 
   }
 }
 
@@ -220,7 +211,6 @@
   margin-bottom: 0.5rem;
 }
 
-/* Optimize for tablet screens */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-rating {
     margin-bottom: 0.5rem;
@@ -228,7 +218,6 @@
   }
 }
 
-/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-rating {
     margin-bottom: 0.75rem;
@@ -241,7 +230,6 @@
   font-size: 0.85rem;
 }
 
-/* Optimize for tablet screens */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-rating span {
     font-size: 0.9rem;
@@ -249,11 +237,10 @@
   }
 }
 
-/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-rating span {
-    font-size: 1rem; /* Increased font size for better readability */
-    color: #555; /* Darker color for better contrast */
+    font-size: 1rem; 
+    color: #555; 
   }
 }
 
@@ -262,10 +249,10 @@
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 1rem;
-  margin-top: auto; /* Push to bottom of flex container */
+  margin-top: auto; 
 }
 
-/* Optimize for tablet screens */
+
 @media (min-width: 768px) and (max-width: 991px) {
   .product-price {
     font-size: 1.3rem;
@@ -274,7 +261,6 @@
   }
 }
 
-/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .product-price {
     font-size: 1.5rem;
@@ -308,7 +294,7 @@
   text-align: center;
 }
 
-/* Optimize for tablet screens */
+
 @media (min-width: 768px) and (max-width: 991px) {
   .details-button {
     padding: 0.7rem 1.2rem;
@@ -319,7 +305,6 @@
   }
 }
 
-/* Optimize for laptop/desktop screens */
 @media (min-width: 992px) {
   .details-button {
     padding: 0.8rem 1.5rem;
@@ -343,7 +328,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Category-specific colors for placeholders */
 .category-computers {
   background-color: #3498db;
 }

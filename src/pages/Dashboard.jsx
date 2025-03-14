@@ -46,7 +46,6 @@ function Dashboard() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Update activeTab when URL changes
   useEffect(() => {
     if (tabParam === 'wishlist') {
       setActiveTab('wishlist');
@@ -55,14 +54,12 @@ function Dashboard() {
     }
   }, [tabParam]);
 
-  // Update URL when tab changes
   useEffect(() => {
     const newParams = new URLSearchParams(location.search);
     newParams.set('tab', activeTab);
     navigate({ search: newParams.toString() }, { replace: true });
   }, [activeTab, location.search, navigate]);
 
-  // Reset image errors when cart or wishlist items change
   useEffect(() => {
     setImageErrors({});
   }, [cartItems, wishlistItems]);
@@ -73,7 +70,7 @@ function Dashboard() {
     }
   };
 
-  // Format price with commas for thousands
+
   const formatPrice = (price) => {
     try {
       const numPrice = parseFloat(price);
@@ -111,16 +108,6 @@ function Dashboard() {
     });
   };
 
-  const handleMoveToCart = (productId) => {
-    // Start animation
-    setAnimatingItems(prev => ({ ...prev, [productId]: 'moving' }));
-    
-    // Delay the actual move to allow animation to play
-    setTimeout(() => {
-      moveToCart(productId);
-      setAnimatingItems(prev => ({ ...prev, [productId]: false }));
-    }, 500);
-  };
 
   const handleSortCart = () => {
     const newDirection = sortDirection === 'desc' ? 'asc' : 'desc';
@@ -170,14 +157,14 @@ function Dashboard() {
     return "item-card";
   };
 
-  // Get CSS class for category
+
   const getCategoryClass = (category) => {
     if (!category) return 'category-unknown';
     const formattedCategory = category.replace(/\s+/g, '-').toLowerCase();
     return `category-${formattedCategory}`;
   };
 
-  // Ensure image path is correct
+
   const getImagePath = (imagePath) => {
     if (!imagePath) {
       console.warn("Missing image path for product");
